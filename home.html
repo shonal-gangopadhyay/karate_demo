@@ -4,29 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home - Demo Project</title>
+    <title>Parent Portal</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <!-- Load icons (Google's Material Symbols) -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 
 <body>
-    <div class="container">
-        <aside class="sidebar">
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="#" onclick="loadContent('home')">Home</a></li>
-                <li><a href="#" onclick="loadContent('profile')">Profile</a></li>
-                <li><a href="#" onclick="loadContent('settings')">Settings</a></li>
-                <li><a href="#" onclick="loadContent('about')">About</a></li>
-            </ul>
-        </aside>
+    <header>
+        <h1>Parent Portal</h1>
+    </header>
 
-        <section class="content" id="content-area">
-            <h2>Welcome!</h2>
-            <p>Select a menu item to see content here.</p>
-        </section>
-    </div>
-
-    <script src="script.js"></script>
+    <nav>
+        <ul>
+            <li><a href="#" class="menu-link"><span class="material-symbols-outlined">account_circle</span>Update
+                    Profile</a></li>
+            <li><a href="#" class="menu-link"><span class="material-symbols-outlined">contract</span>View Contracts</a>
+            </li>
+            <li><a href="#" class="menu-link"><span class="material-symbols-outlined">credit_card</span>Payment
+                    Information</a></li>
+            <li><a href="#" class="menu-link"><span class="material-symbols-outlined">calendar_today</span>School
+                    Calendar</a></li>
+            <li><a href="#" class="menu-link"><span class="material-symbols-outlined">forum</span>Parent Forum</a></li>
+        </ul>
+    </nav>
 </body>
 
 </html>

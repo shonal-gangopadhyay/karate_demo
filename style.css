@@ -1,77 +1,103 @@
-/* Reset some default margins */
-body,
-h1,
-h2,
-p,
-ul {
+/* Reset default margins/padding */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-}
-
-/* Login Page */
-.login-body {
+    background-color: #121212;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
-    background: #eef2f3;
-}
-
-.login-container {
-    text-align: center;
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-container button {
-    margin-top: 1rem;
-    padding: 0.5rem 2rem;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-/* Home Page */
-.container {
-    display: flex;
-    height: 100vh;
-}
-
-.sidebar {
-    width: 220px;
-    background: #333;
-    color: white;
+    justify-content: center;
     padding: 1rem;
 }
 
-.sidebar h2 {
-    margin-bottom: 1rem;
+header {
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
-.sidebar ul {
-    list-style-type: none;
+header h1 {
+    font-size: 2rem;
+    color: #00bcd4;
+    transition: color 0.3s ease;
 }
 
-.sidebar li {
-    margin-bottom: 1rem;
+nav {
+    width: 100%;
+    max-width: 400px;
+    background-color: #1e1e1e;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease-out;
 }
 
-.sidebar a {
-    color: white;
+nav ul {
+    list-style: none;
+}
+
+nav li {
+    border-bottom: 1px solid #2c2c2c;
+}
+
+nav li:last-child {
+    border-bottom: none;
+}
+
+nav a.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
     text-decoration: none;
+    color: #f0f0f0;
+    font-size: 1.2rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+    position: relative;
 }
 
-.sidebar a:hover {
-    text-decoration: underline;
+nav a.menu-link:hover {
+    background: linear-gradient(90deg, #00bcd4 0%, #008ba3 100%);
+    color: #121212;
+    transform: translateX(5px);
 }
 
-.content {
-    flex: 1;
-    padding: 2rem;
-    background: #f4f4f4;
+nav a.menu-link span.material-symbols-outlined {
+    font-size: 24px;
+}
+
+.active {
+    background-color: #00bcd4;
+    color: #121212;
+}
+
+/* Mobile Enhancements */
+@media (max-width: 500px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    nav a.menu-link {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
