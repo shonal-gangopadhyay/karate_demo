@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
       `,
         calendar: `
         <h2>School Calendar</h2>
-        <p>View upcoming events, holidays, and important school dates.</p>
+        <p>View upcoming events, holidays, and important school dates.</p><br>
+        <iframe src="https://calendar.google.com/calendar/embed?src=1950c5c6d1ce93d8e5c8c7499234c1ed3b96077ba8f5dba99add8eb6c405f7cb%40group.calendar.google.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
       `,
         forum: `
         <h2>Parent Forum</h2>
