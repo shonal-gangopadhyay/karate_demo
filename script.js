@@ -10,7 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
     forum: `<h2>Parent Forum</h2><p>Join the discussion.</p>`,
     students: `<h2>All Students</h2><p>View and manage student roster.</p>`,
     announcement: `<h2>Send Announcement</h2><p>Send a message to all users.</p>`,
-    curriculum: `<h2>Curriculum Link</h2><p><a href="https://woodburynkstudent.com/">Curriculum Website (password: nkendurance)</a></p>`
+    curriculum: `
+      <h2>Curriculum Website</h2>
+      <p>
+        Below is the curriculum site embedded directly. If you have trouble viewing it, 
+        <a href="https://woodburynkstudent.com/" target="_blank" style="color: white; text-decoration: underline;">
+          click here to open it in a new tab
+        </a> (password: nkendurance).
+      </p>
+      <iframe src="https://woodburynkstudent.com/" width="100%" height="600" style="border:none; border-radius: 0.5rem;"></iframe>
+    `
   };
 
   links.forEach(link => {
