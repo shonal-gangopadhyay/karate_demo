@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
           click here to open it in a new tab
         </a> (password: nkendurance).
       </p><br>
-      <iframe src="https://woodburynkstudent.com/" width="100%" height="1200" style="border:none; border-radius: 0.5rem;"></iframe>
+      <!-- <iframe src="https://woodburynkstudent.com/" width="100%" height="1200" style="border:none; border-radius: 0.5rem;"></iframe> -->
+      <p> Embedded Page Coming Soon </p>
     `
   };
 
