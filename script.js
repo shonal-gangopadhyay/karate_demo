@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `,
     concept: `
       <h2>Teaching Data Collection</h2>
-      <p>Help improve our teaching of curriculum.</p>
+      <p>Help improve our teaching of curriculum.</p><br><br>
       <h3>Teaching Tricks Form</h3><br><br>
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdcDq3Lr40LgXM86UQs5aIwnivduE6HCHWQjSaNeUVjdejleg/viewform?embedded=true" width="640" height="718" frameborder="0" marginheight="0" marginwidth="0" > Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdcDq3Lr40LgXM86UQs5aIwnivduE6HCHWQjSaNeUVjdejleg/viewform?embedded=true" width="800" height="1000" frameborder="0" marginheight="0" marginwidth="0" > Loading…</iframe>
     `
   };
 
