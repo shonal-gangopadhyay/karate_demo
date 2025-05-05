@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
       </p><br>
       <!-- <iframe src="https://woodburynkstudent.com/" width="100%" height="1200" style="border:none; border-radius: 0.5rem;"></iframe> -->
       <p> Embedded Page Coming Soon </p>
+    `,
+    concept: `
+      <h2>Teaching Data Collection</h2>
+      <p>Help improve our teaching of curriculum.</p>
+      <h3>Teaching Tricks Form</h3>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdcDq3Lr40LgXM86UQs5aIwnivduE6HCHWQjSaNeUVjdejleg/viewform?embedded=true" width="640" height="718" frameborder="0" marginheight="0" marginwidth="0" > Loading…</iframe>
     `
   };
 
