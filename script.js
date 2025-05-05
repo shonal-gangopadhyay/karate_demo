@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <a href="https://woodburynkstudent.com/" target="_blank" style="color: white; text-decoration: underline;">
           click here to open it in a new tab
         </a> (password: nkendurance).
-      </p>
-      <iframe src="https://woodburynkstudent.com/" width="100%" height="600" style="border:none; border-radius: 0.5rem;"></iframe>
+      </p><br>
+      <iframe src="https://woodburynkstudent.com/" width="100%" height="1200" style="border:none; border-radius: 0.5rem;"></iframe>
     `
   };
 
