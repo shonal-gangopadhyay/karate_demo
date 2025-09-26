@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Little Masters — Maple Grove • Karate Parent Portal</title>
+    <meta name="description"
+        content="Maple Grove Little Masters: introduction, concepts, expectations, resources, milestones, testing requirements." />
+
+    <style>
+        /* ===== THEME (dark, accessible) ===== */
+        :root {
+            --bg: #0f172a;
+            --panel: #1f2937;
+            --muted: #9ca3af;
+            --text: #e5e7eb;
+            --text-strong: #f9fafb;
+            --accent: #ef4444;
+            --accent-2: #22d3ee;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --maxw: 1100px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+            background:
+                radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
+                radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
+                var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+        }
+
+        a {
+            color: var(--accent-2);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        /* Header */
+        header.site {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(15, 23, 42, .85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06)
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 20px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
+            box-shadow: 0 4px 18px rgba(34, 211, 238, .25)
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            letter-spacing: .25px;
+            color: var(--text-strong)
+        }
+
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 2px
+        }
+
+        nav a {
+            padding: 8px 12px;
+            border-radius: 10px
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, .06);
+            text-decoration: none
+        }
+
+        /* Breadcrumbs + hero */
+        .breadcrumbs {
+            margin: 12px 0;
+            font-size: .95rem;
+            color: var(--muted)
+        }
+
+        .breadcrumbs a {
+            color: var(--muted)
+        }
+
+        .hero {
+            margin-top: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow)
+        }
+
+        .hero-inner {
+            padding: 18px 16px
+        }
+
+        .hero h2 {
+            margin: 0 0 6px;
+            font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+            color: var(--text-strong)
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: .95rem
+        }
+
+        /* One-column content sections */
+        .sections {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px
+        }
+
+        .section {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 14px 16px
+        }
+
+        .section h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            color: var(--text-strong)
+        }
+
+        .section p {
+            margin: .2rem 0
+        }
+
+        .section ul {
+            margin: .2rem 0 0 1rem
+        }
+
+        .kv {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 8px;
+            font-size: .95rem
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        /* Inline TOC */
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: rgba(255, 255, 255, .05);
+            font-size: .92rem
+        }
+
+        /* Prev/Next nav */
+        .pager {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 6px
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            color: var(--text-strong);
+            font-weight: 600;
+            letter-spacing: .25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35)
+        }
+
+        .btn:hover {
+            text-decoration: none
+        }
+
+        .btn.accent {
+            background: linear-gradient(180deg, rgba(239, 68, 68, .25), rgba(239, 68, 68, .14));
+            border-color: rgba(239, 68, 68, .35)
+        }
+
+        /* Sticky belt shortcuts (optional) */
+        .mobile-toc {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(31, 41, 55, .9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .mobile-toc a {
+            font-size: .92rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site">
+        <div class="topbar wrap">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
+                <div>
+                    <h1>Karate Parent Portal</h1>
+                    <small>Maple Grove</small>
+                </div>
+            </div>
+            <nav>
+                <a href="https://shonal-gangopadhyay.github.io/karate_demo/index.html">All Schools</a>
+                <a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/index.html">School
+                    Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="content" class="wrap">
+        <nav class="breadcrumbs" aria-label="Breadcrumbs">
+            <a href="https://shonal-gangopadhyay.github.io/karate_demo/index.html">Home</a>
+            <a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/index.html">Maple Grove</a>
+            <span class="muted">Gold belt</span>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-inner">
+                <h2>Gold belt</h2>
+                <p class="meta">What to focus on these belts: key concepts, expectations, resources, and what's coming
+                    next.</p>
+
+                <!-- Prev/Next belt navigation -->
+                <div class="pager" style="margin-top:10px;">
+                    <a class="btn" href="/schools/maplegrove/belts/white.html">← White belt</a>
+                    <a class="btn" href="/schools/maplegrove/belts/little-masters.html">← Little Masters</a>
+                    <a class="btn accent" href="/schools/maplegrove/belts/green.html">Green →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="sections">
+            <!-- INTRODUCTION -->
+            <article class="section" id="intro" aria-labelledby="intro-title">
+                <h3 id="intro-title">Introduction</h3>
+                <p>At gold belt, we introduce form into their curriculum. Form is a set of moves in a row that tell the
+                    story of a fight. The beginning forms are some boring fights, but as they progress through the
+                    ranks, the forms get better. We teach traditional taekwondo forms eventually as well as creative and
+                    extreme forms (imagine Hollywood fight scenes). Forms help the students with coupling the
+                    memorization of the moves to motions with their body, exercising multiple muscle sets, thinking and
+                    moving simultaneously, performing by themselves, and more. I could talk about form all day.
+                </p>
+                <div class="kv" style="margin-top:8px">
+                    <div class="muted">Focus This Belt</div>
+                    <div>form and self-defense</div>
+                    <div class="muted">Typical Length</div>
+                    <div>about 2 months (varies by effort/attendance) per belt</div>
+                </div>
+            </article>
+
+            <!-- EXPECTATIONS -->
+            <article class="section" id="expectations" aria-labelledby="expectations-title">
+                <h3 id="expectations-title">Expectations</h3>
+                <ul>
+                    <li>Bring uniform and belt; arrive 5 minutes early. Ask an instructor if you need help tying the
+                        belt.</li>
+                    <li>Students turn in an attendance card to class. We keep track of their attendance as well as their
+                        progress using these cards.</li>
+                </ul>
+            </article>
+
+            <!-- EQUIPMENT & SAFETY -->
+            <article class="section" id="equipment" aria-labelledby="equipment-title">
+                <h3 id="equipment-title">Equipment & Safety</h3>
+                <p>At this rank, the students only need their uniform. The uniform must be a National Karate uniform.
+                    During the summer, students may wear a National Karate t-shirt tucked into their pants accompanied
+                    by their belt instead of the full uniform. At gold belt with a green stripe (aka green
+                    stripe), I would recommend talking to Mr. Boone about purchasing sparring equipment which they will
+                    start using at solid green belt.</p>
+            </article>
+
+            <!-- Tape stripes -->
+            <article class="section" id="tape-stripes" aria-labelledby="tape-stripes-title">
+                <h3 id="tape-stripes-title">The way tape stripes work</h3>
+                <p>The electrical tape that we use on the students' belts is for keeping track of their skill as well as
+                    their attendance. Every 4(ish) classes, we take a look at the students in class to see how they're
+                    doing in regards to the karate moves and as well as their listening skills. Depending on that, we
+                    award them with a tape. When they earn all three tapes, they are pretty close to testing for their
+                    next belt.</p>
+            </article>
+
+            <!-- Tournament Info -->
+            <article class="section" id="tournament" aria-labelledby="tournament-title">
+                <h3 id="tournament-title">Tournaments</h3>
+                <p>We do offer tournaments at this level to the students. Just like there are four rings in the main
+                    classroom, there are a bunch of rings at the tournaments. The student's assigned ring will be with
+                    other students their age and belt level. They can't compete in every division since
+                    they can't backflip (yet), but they can participate in the following divisions:
+                </p>
+                <ul>
+                    <li><strong>Performance Basics</strong> is where they get called up one at a time to do the basic
+                        karate moves that we do in class. Many time before a tournament, all we do is practice these
+                        moves in order to get them ready for the tournaments. In this division, it's like a
+                        participation division where everyone gets a trophy. In my opinion, this is a great division for
+                        new competitors and it should also be paired with the competitive basics division, so the
+                        students compete in both divisions. Additionally, it's been a while since your student has done
+                        a tournament, you can treat this division as the warm up for the competitive division.</li>
+                    <li><strong>Competitive Basics</strong> is where they get called up one at a time to do the basic
+                        moves, but this times it's graded and compared to the rest of the students. Here's what the
+                        judges grade on: </li>
+                    <ul>
+                        <li>Correct Technique (i.e. twist on a punch)</li>
+                        <li>Speed (move as fast as you can on every single motion)</li>
+                        <li>Power (hit hard)</li>
+                        <li>Loud Yells (yell loudly and no screaming)</li>
+                        <li>Intense/Focused Face (intense face and look at your target instead of around the room)</li>
+                    </ul>
+                    <li><strong>Performance Form</strong> is where they get called up one at a time to present their
+                        form. We frequently practice the routine in classes leading up to tournaments. In this division,
+                        it's like a participation division where everyone gets a trophy. In my opinion, this is a great
+                        division for new competitors and it should also be paired with the competitive form division,
+                        so the students compete in both divisions. Additionally, if it has been a while since your
+                        student has done a tournament, you can treat this division as the warm up for the competitive
+                        division.</li>
+                    <li><strong>Competitive Form</strong> is where they get called up one at a time to their form, but
+                        this time it's graded and compared to the rest of the students. Here's what the
+                        judges grade on: </li>
+                    <ul>
+                        <li>Correct Technique (i.e. correct and deep stances)</li>
+                        <li>Speed (move as fast as you can on every single motion)</li>
+                        <li>Power (hit hard)</li>
+                        <li>Loud Yells (yell loudly and no screaming)</li>
+                        <li>Intense/Focused Face (intense face and look at your target instead of around the room)</li>
+                    </ul>
+                </ul>
+            </article>
+
+            <!-- What's next -->
+            <article class="section" id="next" aria-labelledby="next-title">
+                <h3 id="next-title">What's next</h3>
+                <p>The next belt is green belt. At green belt, students start the sparring class. They will need a set
+                    of sparring equipment at this rank, so please talk to Mr. Boone while they are still a gold belt
+                    with a green stripe.</p>
+            </article>
+
+            <!-- PAGE META -->
+            <article class="section" aria-labelledby="meta-title">
+                <h3 id="meta-title">Page Info</h3>
+                <div class="kv">
+                    <div class="muted">Last Updated</div>
+                    <div><span id="last-updated">2025-09-26</span></div>
+                    <div class="muted">School</div>
+                    <div>Maple Grove</div>
+                    <div class="muted">Belt</div>
+                    <div>Gold</div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Prev/Next belt navigation (repeat at bottom for convenience) -->
+        <div class="pager">
+            <a class="btn" href="/schools/maplegrove/belts/white.html">← White belt</a>
+            <a class="btn" href="/schools/maplegrove/belts/little-masters.html">← Little Masters</a>
+            <a class="btn accent" href="/schools/maplegrove/belts/green.html">Green →</a>
+        </div>
+
+        <footer class="muted" style="margin:40px 0 18px;">
+            © <span id="year"></span> Maple Grove • Karate Parent Portal
+        </footer>
+    </main>
+
+    <script>
+        // Simple helpers you can keep or remove
+        document.getElementById('year').textContent = new Date().getFullYear();
+        // If you want to stamp a date:
+        // document.getElementById('last-updated').textContent = '2025-09-26';
+    </script>
+</body>
+
+</html>
