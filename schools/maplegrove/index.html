@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maple Grove — Karate Parent Portal</title>
+    <meta name="description"
+        content="Maple Grove school page: schedule, belt roadmap, milestones, expectations, and resources." />
+
+    <style>
+        /* ===== THEME ===== */
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #111827;
+            --panel: #1f2937;
+            --muted: #9ca3af;
+            --text: #e5e7eb;
+            --text-strong: #f9fafb;
+            --accent: #ef4444;
+            --accent-2: #22d3ee;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --maxw: 1100px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+            background: radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, 0.06), transparent 40%),
+                radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, 0.06), transparent 40%),
+                var(--bg);
+            color: var(--text);
+            line-height: 1.55;
+        }
+
+        a {
+            color: var(--accent-2);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        /* Header */
+        header.site {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(15, 23, 42, .85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06)
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 20px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
+            box-shadow: 0 4px 18px rgba(34, 211, 238, .25)
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            letter-spacing: .25px;
+            color: var(--text-strong)
+        }
+
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 2px
+        }
+
+        nav a {
+            padding: 8px 12px;
+            border-radius: 10px
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, .06);
+            text-decoration: none
+        }
+
+        /* Hero */
+        .hero {
+            margin-top: 18px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden
+        }
+
+        .hero-inner {
+            padding: 22px 20px
+        }
+
+        .hero h2 {
+            margin: 0 0 8px;
+            font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+            color: var(--text-strong)
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: .95rem
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(12, 1fr);
+            margin-top: 18px
+        }
+
+        .card {
+            grid-column: span 12;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            color: var(--text-strong)
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            color: var(--text-strong);
+            font-weight: 600;
+            letter-spacing: .25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+            text-decoration: none
+        }
+
+        .btn.accent {
+            background: linear-gradient(180deg, rgba(239, 68, 68, .25), rgba(239, 68, 68, .14));
+            border-color: rgba(239, 68, 68, .35)
+        }
+
+        .list {
+            margin: 0;
+            padding-left: 18px
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        /* Belt TOC grid */
+        .belt-grid .card {
+            padding: 14px
+        }
+
+        .belt-grid .card h4 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+            color: var(--text-strong)
+        }
+
+        .belt-grid .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: .95rem
+        }
+
+        /* Schedule table */
+        table.schedule {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .schedule th,
+        .schedule td {
+            padding: 10px 12px;
+            text-align: left
+        }
+
+        .schedule thead {
+            background: rgba(255, 255, 255, .05)
+        }
+
+        .schedule tbody tr:nth-child(odd) {
+            background: rgba(255, 255, 255, .03)
+        }
+
+        /* Mobile-first: 1 card per row */
+        @media (min-width: 640px) {
+            .cards .card {
+                grid-column: span 6
+            }
+        }
+
+        /* 2 per row */
+        @media (min-width: 980px) {
+            .cards .card {
+                grid-column: span 4
+            }
+        }
+
+        /* 3 per row */
+
+        /* Sticky mobile belt bar */
+        .mobile-toc {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(31, 41, 55, .9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .mobile-toc a {
+            font-size: .92rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+    </style>
+</head>
+
+<body>
+    <a class="sr-only" href="#content">Skip to content</a>
+
+    <header class="site">
+        <div class="topbar wrap">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
+                <div>
+                    <h1>Karate Parent Portal</h1>
+                    <small>Maple Grove • Standard curriculum • Tournament focus</small>
+                </div>
+            </div>
+            <nav>
+                <a href="/index.html">← All Schools</a>
+                <a href="https://www.nationalkarate.com/" target="_blank" rel="noopener noreferrer">National Karate</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="content" class="wrap">
+        <!-- Intro / hero -->
+        <section class="hero">
+            <div class="hero-inner">
+                <h2>Welcome to Maple Grove</h2>
+                <p class="meta">
+                    This page is your roadmap: schedule, expectations, and resources by belt.
+                    Sparring typically starts at <strong>Green Belt</strong>, and <strong>Bo</strong> instruction begins
+                    around <strong>Blue Belt</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Schedule + Quick notes -->
+        <section class="cards">
+            <article class="card" aria-labelledby="schedule-title">
+                <h3 id="schedule-title">Weekly Schedule</h3>
+                <table class="schedule">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Class</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mon</td>
+                            <td>5:00–5:45p</td>
+                            <td>Beginners (White–Yellow)</td>
+                            <td>Foundations + basics</td>
+                        </tr>
+                        <tr>
+                            <td>Mon</td>
+                            <td>6:00–6:45p</td>
+                            <td>Intermediate (Green–Blue)</td>
+                            <td>Sparring weeks posted monthly</td>
+                        </tr>
+                        <tr>
+                            <td>Wed</td>
+                            <td>5:00–5:45p</td>
+                            <td>Beginners (White–Yellow)</td>
+                            <td>Stripes & conditioning</td>
+                        </tr>
+                        <tr>
+                            <td>Wed</td>
+                            <td>6:00–6:50p</td>
+                            <td>Advanced (Brown–Black)</td>
+                            <td>Bo / forms focus</td>
+                        </tr>
+                        <tr>
+                            <td>Sat</td>
+                            <td>10:00–10:45a</td>
+                            <td>All Ranks (drills)</td>
+                            <td>Great for make-ups</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="muted" style="margin-top:10px;">Exact times may vary—check instructor announcements for
+                    updates.</p>
+            </article>
+
+            <article class="card" aria-labelledby="notes-title">
+                <h3 id="notes-title">Notes for Parents</h3>
+                <ul class="list">
+                    <li><strong>Green Belt</strong>: begin controlled sparring (safety gear required).</li>
+                    <li><strong>Blue Belt</strong>: Bo instruction begins (practice bo recommended).</li>
+                    <li><strong>Tournaments</strong>: Optional—great for confidence and goal setting.</li>
+                    <li>Short, frequent practice beats long, infrequent sessions.</li>
+                </ul>
+                <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <a class="btn" href="#belt-toc">Jump to Belts</a>
+                    <a class="btn accent" href="#contact">Contact Instructor</a>
+                </div>
+            </article>
+        </section>
+
+        <!-- Belt Table of Contents -->
+        <section class="cards belt-grid" aria-labelledby="belt-toc">
+            <h3 id="belt-toc" class="sr-only">Belt Table of Contents</h3>
+
+            <article class="card">
+                <h4>White Belt</h4>
+                <p><a href="/schools/maplegrove/belts/white.html">What to expect • First uniform • Basics</a></p>
+            </article>
+
+            <article class="card">
+                <h4>Yellow Belt</h4>
+                <p><a href="/schools/maplegrove/belts/yellow.html">Stances • Kicks • Form video</a></p>
+            </article>
+
+            <article class="card">
+                <h4>Green Belt</h4>
+                <p><a href="/schools/maplegrove/belts/green.html">Sparring begins • Gear checklist • Safety</a></p>
+            </article>
+
+            <article class="card">
+                <h4>Blue Belt</h4>
+                <p><a href="/schools/maplegrove/belts/blue.html">Bo basics • Control & etiquette • Drills</a></p>
+            </article>
+
+            <article class="card">
+                <h4>Brown Belt</h4>
+                <p><a href="/schools/maplegrove/belts/brown.html">Advanced combos • Conditioning • Goals</a></p>
+            </article>
+
+            <article class="card">
+                <h4>Black Belt</h4>
+                <p><a href="/schools/maplegrove/belts/black.html">Focus areas • Leadership • Testing</a></p>
+            </article>
+        </section>
+
+        <!-- Contact / FAQ -->
+        <section class="cards" id="contact" aria-labelledby="contact-title">
+            <article class="card">
+                <h3 id="contact-title">Contact & Quick FAQ</h3>
+                <p class="muted">Have a question about schedules, gear, or expectations? Reach out anytime.</p>
+                <ul class="list">
+                    <li><strong>Instructor:</strong> <span class="muted">Name Here</span></li>
+                    <li><strong>Email:</strong> <a href="mailto:instructor@example.com">instructor@example.com</a></li>
+                    <li><strong>Announcements:</strong> Posted in class and on this page.</li>
+                </ul>
+            </article>
+            <article class="card">
+                <h3>FAQ</h3>
+                <ul class="list">
+                    <li><strong>When do we buy sparring gear?</strong> Before/at Green Belt; ask us for fit guidance.
+                    </li>
+                    <li><strong>Do we need our own bo?</strong> Recommended at Blue Belt; we have sizing tips.</li>
+                    <li><strong>How often should we practice?</strong> 10–15 mins, 3–4x/week is excellent.</li>
+                </ul>
+            </article>
+        </section>
+
+        <footer class="muted" style="margin:40px 0 18px;">
+            © <span id="year"></span> Maple Grove • Karate Parent Portal
+        </footer>
+    </main>
+
+    <!-- Sticky mobile belt shortcuts -->
+    <nav class="mobile-toc" aria-label="Quick belt navigation">
+        <a href="/schools/maplegrove/belts/white.html">White</a>
+        <a href="/schools/maplegrove/belts/yellow.html">Yellow</a>
+        <a href="/schools/maplegrove/belts/green.html">Green</a>
+        <a href="/schools/maplegrove/belts/blue.html">Blue</a>
+        <a href="/schools/maplegrove/belts/brown.html">Brown</a>
+        <a href="/schools/maplegrove/belts/black.html">Black</a>
+    </nav>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>
