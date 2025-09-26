@@ -230,6 +230,13 @@
         }
 
         /* Responsive grid */
+        /* Force single-column cards on mobile/tablet */
+        @media (max-width: 899.98px) {
+            .cards .card {
+                grid-column: span 12 !important;
+            }
+        }
+
         @media (min-width: 640px) {
             .card {
                 grid-column: span 6;
