@@ -62,6 +62,15 @@
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* (1) Reading comfort: slight bump; see @media for larger screens */
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        @media (min-width: 640px) {
+            body {
+                font-size: 18px;
+            }
         }
 
         a {
@@ -322,6 +331,149 @@
             background: rgba(255, 255, 255, .06);
             border: 1px solid rgba(255, 255, 255, .08);
         }
+
+        /* =========================
+     (1) Reading comfort utilities
+     ========================= */
+        .prose {
+            max-width: 70ch;
+        }
+
+        .prose p,
+        .prose ul,
+        .prose ol {
+            margin: 0 0 1rem;
+        }
+
+        /* =========================
+     (2) Hierarchy helpers
+     ========================= */
+        .kicker {
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        .lead {
+            font-size: 1.05em;
+            color: var(--text-strong);
+        }
+
+        h2,
+        h3 {
+            scroll-margin-top: 80px;
+        }
+
+        /* =========================
+     (3) Callouts
+     ========================= */
+        .callout {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02));
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+        }
+
+        .callout .title {
+            font-weight: 700;
+            color: var(--text-strong);
+        }
+
+        ul.list {
+            padding-left: 1.1rem;
+        }
+
+        ul.list li {
+            margin: .4rem 0;
+        }
+
+        /* =========================
+     (4) Progressive disclosure
+     ========================= */
+        details {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: var(--radius);
+            padding: .6rem .9rem;
+        }
+
+        details+details {
+            margin-top: .6rem;
+        }
+
+        details summary {
+            cursor: pointer;
+            list-style: none;
+            font-weight: 700;
+            color: var(--text-strong);
+        }
+
+        details[open] {
+            box-shadow: var(--shadow);
+        }
+
+        /* =========================
+     (5) Sticky in-page TOC
+     ========================= */
+        .toc {
+            position: sticky;
+            top: 64px;
+            background: rgba(31, 41, 55, .6);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 999px;
+            padding: 6px 10px;
+            margin: 12px 0;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toc a {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+        }
+
+        /* =========================
+     (7) Micro-spacing & contrast
+     ========================= */
+        h2 {
+            margin: 1.2rem 0 .6rem;
+            font-size: clamp(1.35rem, 3vw, 1.9rem);
+        }
+
+        h3 {
+            margin: 1.1rem 0 .4rem;
+            font-size: 1.1rem;
+        }
+
+        .meta,
+        .muted {
+            color: color-mix(in oklab, var(--muted), white 10%);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            margin: 1.2rem 0;
+        }
+
+        /* =========================
+     (8) A11y polish
+     ========================= */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent-2);
+            outline-offset: 2px;
+        }
     </style>
 
 </head>
@@ -348,16 +500,17 @@
 
     <main id="content" class="wrap">
         <section class="hero">
-            <div class="hero-inner">
+            <div class="hero-inner prose">
                 <h2>Welcome! 👋</h2>
-                <p>Hi, I'm Shonal Gangopadhyay, but you can call me Mr. G. This is not an official National Karate
+                <p class="lead">Hi, I'm Shonal Gangopadhyay, but you can call me Mr. G. This is not an official National
+                    Karate
                     website! This is for me to share with my students' parents without having to print anything out 😉
                     This site gives parents a clear, school-specific roadmap so every student knows what to practice,
                     what to expect at each belt, and how to be ready for success.</p>
             </div>
         </section>
 
-        <section class="info-grid">
+        <section class="info-grid prose">
             <div class="info">
                 <h3>High level roadmap</h3>
                 <ul class="list">
