@@ -12,43 +12,29 @@
     <link rel="icon" href="data:,">
 
     <style>
-        /* =========================
-     THEME & RESET
-     ========================= */
         :root {
             --bg: #0f172a;
-            /* slate-900 */
             --bg-soft: #111827;
-            /* gray-900 */
             --panel: #1f2937;
-            /* gray-800 */
             --muted: #9ca3af;
-            /* gray-400 */
             --text: #e5e7eb;
-            /* gray-200 */
             --text-strong: #f9fafb;
-            /* gray-50 */
             --accent: #ef4444;
-            /* red-500 */
             --accent-2: #22d3ee;
-            /* cyan-400 */
             --ok: #22c55e;
-            /* green-500 */
             --warn: #f59e0b;
-            /* amber-500 */
-
             --radius: 16px;
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-            --maxw: 1100px;
+            --maxw: 1100px
         }
 
         * {
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         html,
         body {
-            height: 100%;
+            height: 100%
         }
 
         body {
@@ -61,25 +47,22 @@
             color: var(--text);
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            -moz-osx-font-smoothing: grayscale
         }
 
         a {
             color: var(--accent-2);
-            text-decoration: none;
+            text-decoration: none
         }
 
         a:hover {
-            text-decoration: underline;
+            text-decoration: underline
         }
 
-        /* =========================
-     LAYOUT
-     ========================= */
         .wrap {
             max-width: var(--maxw);
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px
         }
 
         header.site {
@@ -88,7 +71,7 @@
             z-index: 40;
             background: rgba(15, 23, 42, .85);
             backdrop-filter: blur(6px);
-            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            border-bottom: 1px solid rgba(255, 255, 255, .06)
         }
 
         .topbar {
@@ -96,13 +79,13 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 14px 20px;
+            padding: 14px 20px
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 12px
         }
 
         .logo {
@@ -111,31 +94,31 @@
             border-radius: 50%;
             background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
             box-shadow: 0 4px 18px rgba(34, 211, 238, .25);
-            flex: 0 0 auto;
+            flex: 0 0 auto
         }
 
         .brand h1 {
             font-size: 1.05rem;
             margin: 0;
             letter-spacing: .25px;
-            color: var(--text-strong);
+            color: var(--text-strong)
         }
 
         .brand small {
             display: block;
             color: var(--muted);
             font-size: .8rem;
-            margin-top: 2px;
+            margin-top: 2px
         }
 
         nav a {
             padding: 8px 12px;
-            border-radius: 10px;
+            border-radius: 10px
         }
 
         nav a:hover {
             background: rgba(255, 255, 255, .06);
-            text-decoration: none;
+            text-decoration: none
         }
 
         .hero {
@@ -144,28 +127,24 @@
             border: 1px solid rgba(255, 255, 255, .06);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow: hidden
         }
 
         .hero-inner {
-            padding: 22px 20px;
+            padding: 22px 20px
         }
 
         .hero h2 {
             margin: 0 0 8px;
             font-size: clamp(1.25rem, 2.5vw, 1.8rem);
-            color: var(--text-strong);
+            color: var(--text-strong)
         }
 
         .hero p {
             margin: 0;
-            color: var(--muted);
+            color: var(--muted)
         }
 
-        /* =========================
-     CARDS / TILES — MOBILE FIRST
-     Default: single column (prevents squished grids on mobile)
-     ========================= */
         .cards,
         .info-grid,
         .belt-cards,
@@ -175,15 +154,12 @@
         .schools {
             display: grid;
             grid-template-columns: 1fr;
-            /* single column at all sizes */
             gap: 14px;
-            margin-top: 18px;
+            margin-top: 18px
         }
 
-        /* Card block */
         .card {
             grid-column: 1 / -1;
-            /* full width */
             background: var(--panel);
             border: 1px solid rgba(255, 255, 255, .07);
             border-radius: var(--radius);
@@ -191,30 +167,30 @@
             padding: 16px;
             transition: transform .15s ease, box-shadow .2s ease;
             width: 100%;
-            max-width: 100%;
+            max-width: 100%
         }
 
         .card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 34px rgba(0, 0, 0, .5);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .5)
         }
 
         .card h3 {
             margin: 0 0 8px;
             font-size: 1.05rem;
-            color: var(--text-strong);
+            color: var(--text-strong)
         }
 
         .meta {
             color: var(--muted);
-            font-size: .9rem;
+            font-size: .9rem
         }
 
         .card .actions {
             margin-top: 12px;
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
+            flex-wrap: wrap
         }
 
         .btn {
@@ -231,22 +207,18 @@
             font-weight: 600;
             letter-spacing: .25px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
-            cursor: pointer;
+            cursor: pointer
         }
 
         .btn:hover {
-            text-decoration: none;
+            text-decoration: none
         }
 
         .btn.accent {
             background: linear-gradient(180deg, rgba(239, 68, 68, .25), rgba(239, 68, 68, .14));
-            border-color: rgba(239, 68, 68, .35);
+            border-color: rgba(239, 68, 68, .35)
         }
 
-        /* =========================
-     RESPONSIVE UPSHIFTS
-     (kept, but forced to 1 column)
-     ========================= */
         @media (min-width:640px) {
 
             .cards,
@@ -254,13 +226,11 @@
             .tiles,
             .quick-links,
             .schools {
-                grid-template-columns: 1fr;
-                /* force single column */
+                grid-template-columns: 1fr
             }
 
             .info-grid {
-                grid-template-columns: 1fr;
-                /* force single column */
+                grid-template-columns: 1fr
             }
         }
 
@@ -271,17 +241,10 @@
             .tiles,
             .quick-links,
             .schools {
-                grid-template-columns: 1fr;
-                /* force single column */
+                grid-template-columns: 1fr
             }
-
-            /* info-grid stays single column on desktop as requested */
-            /* .info-grid { grid-template-columns: 1fr; } */
         }
 
-        /* =========================
-     ACCESSIBILITY
-     ========================= */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -291,12 +254,9 @@
             overflow: hidden;
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
-            border: 0;
+            border: 0
         }
 
-        /* =========================
-     STICKY MOBILE TOC (belt pages)
-     ========================= */
         .mobile-toc {
             position: fixed;
             left: 0;
@@ -312,7 +272,7 @@
             border-radius: 999px;
             background: rgba(31, 41, 55, .9);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .08)
         }
 
         .mobile-toc a {
@@ -320,7 +280,7 @@
             padding: 8px 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, .06);
-            border: 1px solid rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .08)
         }
     </style>
 
@@ -349,136 +309,98 @@
     <main id="content" class="wrap">
         <section class="hero">
             <div class="hero-inner">
-                <h2>Welcome! 👋</h2>
-                <p>Hi, I'm Shonal Gangopadhyay, but you can call me Mr. G. This is not an official National Karate
-                    website! This is for me to share with my students' parents without having to print anything out 😉
-                    This site gives parents a clear, school-specific roadmap so every student knows what to practice,
-                    what to expect at each belt, and how to be ready for success.</p>
+                <h2>Welcome</h2>
+                <p>
+                    I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National Karate
+                    site)
+                    to help parents track what to practice, what classes cover, and how to stay ready for
+                    testing—organized
+                    by school and belt.
+                </p>
             </div>
         </section>
 
         <section class="info-grid">
             <div class="info">
-                <h3>High level roadmap</h3>
+                <h3>High-level roadmap</h3>
                 <ul class="list">
-                    <li><strong>New students</strong> start on an introductory program before starting their martial
-                        arts journey. Generally, they will learn basics, slow kicks, fast kicks, paper kicks, pad
-                        strikes, marching basics, forms, self-defense, and eventually weapons and sparring. In addition
-                        to learning physical skills, they will also learn life skills such as respect, focus, and
-                        discipline.</li>
-                    <li><strong>White belts</strong> and <strong>Gold belts</strong> are usually in the same class. They
-                        focus on basics, respect, discipline, and focus.</li>
-                    <li><strong>Green belts</strong> start sparring classes and continue form classes. Sparring classes
-                        are denoted by an asterisk
-                        (*) on your school's schedule. Students must purchase a sparring equipment package from their
-                        school's director/instructor. Students must attend at least one regular class and one sparring
-                        class per week. I would recommend two of each per week if you can, we don't charge extra.</li>
-                    <li><strong>Purple belts</strong> continue form and sparring classes. This is when my students
-                        usually really take off since they've been a student for almost a year now.</li>
-                    <li><strong>Blue belts</strong> at most schools start training with the bo staff during their form
-                        class. Bo staves must be purchased from your school's director/instructor. Training with a
-                        weapon teaches the students how to treat the bo as an extension to their body.</li>
-                    <li><strong>Red belts</strong> start training for black belt. They are now an advanced belt, so this
-                        is the start of perfecting everything that they have learned so far. They will learn a few new
-                        things such as a new form, Zang Do Moon, but they learned most of our basics already at this
-                        point.</li>
-                    <li><strong>Brown belts</strong> will learn a new bo form, Discovery, and some schools teach a
-                        musical form, Beethoven. Brown belt is really just months of training for Black Belt.</li>
-                    <li><strong>First Degree Black belts</strong> are masters of the basics. This is where the
-                        curriculum expands immensely. Sparring competition is different, form has new weapons, they can
-                        create their own forms, self-defense has more concepts and defenses, etc.</li>
-                    <li><strong>Second Degree Black belts</strong> are straight up impressive martial artists. I make my
-                        2nd degrees teach as well which comes with a huge list of skills that they pick up.</li>
-                    <li><strong>Third Degree Black belts</strong> are good.</li>
+                    <li><strong>New students:</strong> Intro program covering fundamentals—stances, strikes, kicks,
+                        forms, and self-defense—plus life skills (respect, focus, discipline).</li>
+                    <li><strong>White & Gold:</strong> Foundation work and class habits; emphasis on basics and
+                        etiquette.</li>
+                    <li><strong>Green:</strong> Add sparring (marked with * on schedules). Purchase sparring gear
+                        through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
+                    <li><strong>Purple:</strong> Continue form and sparring; skills typically accelerate with
+                        consistency.</li>
+                    <li><strong>Blue:</strong> Begin bo staff in form class (school-purchased equipment). Learn safe,
+                        controlled weapon handling.</li>
+                    <li><strong>Red:</strong> Advanced preparation toward Black Belt; refine all fundamentals and add
+                        new material (e.g., Zang Do Moon).</li>
+                    <li><strong>Brown:</strong> Train Discovery (bo) and, at some schools, a musical form (e.g.,
+                        Beethoven); focused Black Belt prep.</li>
+                    <li><strong>1st Degree Black:</strong> Mastery of basics with expanded curriculum—new weapons,
+                        deeper self-defense, performance options.</li>
+                    <li><strong>2nd Degree Black:</strong> Advanced proficiency and leadership; many assist with
+                        teaching.</li>
+                    <li><strong>3rd Degree Black:</strong> High-level technical skill, coaching, and mentorship.</li>
                 </ul>
             </div>
+
             <div class="info">
                 <h3>Quick notes</h3>
-                <p>Here are a few things that I want to get out there. Please ask me or your instructor if you have any
-                    questions on any of these points.</p>
+                <p>If you have questions, ask your school director or instructor.</p>
                 <ul class="list">
-                    <li>Sparring equipment must be purchased from your NK school.</li>
-                    <li>Bo staves (blue belt), kamas (black belt) and bokkens (black belt) must be purchased from your
-                        NK school.</li>
-                    <li>Mr G's opinion: Students should bring <strong>all</strong> of their equipment to every class.
-                    </li>
-                    <li>Cleaning your sparring equipment is mandatory.</li>
-                    <li>A bo staff is a weapon so handle it with care and respect.</li>
-                    <li>I never let siblings spar. There's too much that can go wrong.</li>
-                    <li>During the school year, students must wear their full uniform to form classes. For summer
-                        classes and all sparring classes, students can either wear their full uniform or they can wear
-                        their karate pants, their belt, and a NK tshirt tucked into their pants. Some schools make it
-                        mandatory to wear the tshirt from that year.</li>
-                    <li>Different schools have slightly different rules when it comes to upgrading from the white
-                        uniform to the white and black uniform with their name on the back. Talk to your directory to
-                        see how your school operates. There's also a blue uniform with red trim and a white uniform with
-                        red trim that you can ask about.</li>
+                    <li>Sparring gear is purchased through your NK school.</li>
+                    <li>Bo (Blue Belt), kamas and bokken (Black Belt) are purchased through your school.</li>
+                    <li><strong>Recommendation:</strong> Bring <em>all</em> required gear to every class.</li>
+                    <li>Clean sparring gear regularly.</li>
+                    <li>Treat the bo as a weapon—use care and respect.</li>
+                    <li>No sibling-vs-sibling sparring.</li>
+                    <li>During the school year, wear full uniform to form classes. For summer and all sparring classes:
+                        full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require the
+                        current year’s shirt).</li>
+                    <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
+                        Blue/red-trim options may also be available.</li>
                 </ul>
             </div>
+
             <div class="info">
                 <h3>Tournaments</h3>
-                <p>All NK students have the option of attending I think 7 tournaments that are locally run
-                    throughout the tournament season. Anyone who is a blue belt or higher has probably already heard
-                    about the NK intramural/NK team tournament and/or Diamond Nationals.</p>
+                <p>
+                    NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
+                    Intramurals/Team events and Diamond Nationals.
+                </p>
                 <ul class="list">
-                    <li>Just like there are ring(s) in the classroom, there will be a bunch of rings at the tournament.
-                    </li>
-                    <li>Each ring will only have students of a certain age, gender, and belt rank.</li>
-                    <li>We'll tell you which ring and at what time to go to your ring.</li>
-                    <li>Students have a wide array of options that they can compete or participate in. Talk to your
-                        instructor to see which of these divisions is a good fit for your student. Also, not every
-                        tournament offers every single division. I usually recommend competing in competitive form,
-                        competitive weapons, and sparring if the student is a high enough belt for all those divisions.
-                    </li>
-                    <ul class="list">
-                        <li><strong>Performance Basics</strong> is where your student and their fellow competitors get
-                            called up one at a time to the center of the ring. The center judge will read off all their
-                            moves that they practice in class and the student just has to do them (well). The students
-                            <strong>do not</strong> receive a grade/score for performance divisions.
-                        </li>
-                        <li><strong>Competitive Basics</strong> is where your student and their fellow competitors get
-                            called up one at a time to the center of the ring. The center judge will read off all their
-                            moves that they practice in class and the student just has to do them well. The students
-                            <strong>do</strong> receive a grade/score for performance divisions.
-                        </li>
-                        <li><strong>Performance Form</strong> is where your student and their fellow competitors get
-                            called up one at a time to present their form. I recommend this for anyone who has never
-                            competed before (usually white, gold, and green belts.) The students
-                            <strong>do not</strong> receive a grade/score for performance divisions.
-                        </li>
-                        <li><strong>Competitive Form</strong> is where your student and their fellow competitors get
-                            called up one at a time to present their form. They absolutely do get scored on their
-                            performance.</li>
-                        <li><strong>Competitive Weapons</strong> is just like form, but it's with weapons. This is Mrs.
-                            G's favorite competition.</li>
-                        <li><strong>Sparring</strong> divisions are split into a bracket where students must win in
-                            order to move on in the bracket.</li>
-                        <li><strong>CMX</strong> stands for creative, musical, and extreme which is usually just for
-                            black belts. Some schools have their students start musical at brown belt.</li>
-                    </ul>
-                    <li>Here are the tournament dates for the rest of the 2025 tournament season.</li>
-                    <ul class="list">
-                        <li>Diamond Nationals is Friday and Saturday, October 10th and 11th.</li>
-                        <li>NCKA Finals is Sunday, November 16th.</li>
-                    </ul>
+                    <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
+                    <li>You’ll receive your ring assignment and report time.</li>
+                    <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
+                        Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically Black
+                        Belt, sometimes Brown for musical).</li>
+                    <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
+                        Sparring (when eligible).</li>
+                </ul>
+                <p><strong>2025 dates</strong></p>
+                <ul class="list">
+                    <li>Diamond Nationals — October 10–11 (Fri–Sat)</li>
+                    <li>NCKA Finals — November 16 (Sun)</li>
                 </ul>
             </div>
-            <div class="info">
-                <h3>How the rest of the site is organized</h3>
-                <p>Pick your school, then jump directly to any belt. Every belt page follows the same structure:
-                    <em>What classes focus on</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources
-                        (videos)</em>, and <em>Testing requirements</em>. Right now, only Maple Grove's site is being
-                    worked on.
-                </p>
-                <div class="cards">
 
+            <div class="info">
+                <h3>How this site is organized</h3>
+                <p>
+                    Choose your school, then jump to a belt. Each belt page follows the same structure:
+                    <em>Class focus</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources (videos)</em>, and
+                    <em>Testing requirements</em>. Maple Grove is the first school being built out.
+                </p>
+
+                <div class="cards">
                     <article class="card">
                         <h3>Albertville</h3>
                         <div class="meta">Mrs. Boone</div>
                         <div class="actions">
                             <a class="btn accent" href="#" onclick="demoSchool('Albertville'); return false;">Visit
-                                school
-                                page</a>
+                                school page</a>
                         </div>
                     </article>
 
@@ -494,11 +416,9 @@
                     <article class="card">
                         <h3>Apple Valley</h3>
                         <div class="meta">Mr. and Mrs. Albertson</div>
-                        <div class="meta"></div>
                         <div class="actions">
                             <a class="btn accent" href="#" onclick="demoSchool('Apple Valley'); return false;">Visit
-                                school
-                                page</a>
+                                school page</a>
                         </div>
                     </article>
 
@@ -507,8 +427,7 @@
                         <div class="meta">Mr. Hill</div>
                         <div class="actions">
                             <a class="btn accent" href="#" onclick="demoSchool('Eden Prairie'); return false;">Visit
-                                school
-                                page</a>
+                                school page</a>
                         </div>
                     </article>
 
@@ -518,8 +437,7 @@
                         <div class="actions">
                             <a class="btn accent"
                                 href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/index.html">Visit
-                                school
-                                page</a>
+                                school page</a>
                         </div>
                     </article>
 
@@ -537,11 +455,9 @@
                         <div class="meta">Ms. Lemon</div>
                         <div class="actions">
                             <a class="btn accent" href="#"
-                                onclick="demoSchool('South Minneapolis'); return false;">Visit school
-                                page</a>
+                                onclick="demoSchool('South Minneapolis'); return false;">Visit school page</a>
                         </div>
                     </article>
-
                 </div>
             </div>
         </section>
@@ -552,15 +468,9 @@
     </main>
 
     <script>
-        // Small utilities for the demo
         document.getElementById('year').textContent = new Date().getFullYear();
-
-        function demoSchool(name) {
-            alert(`${name} page would live at /schools/${slugify(name)}/index.html`);
-        }
-        function slugify(str) {
-            return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        }
+        function demoSchool(name) { alert(`${name} page would live at /schools/${slugify(name)}/index.html`); }
+        function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
     </script>
 </body>
 
