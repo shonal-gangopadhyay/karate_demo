@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Karate Parent Portal</title>
     <meta name="description"
-        content="A clear, mobile‑first portal for karate parents with school‑specific pages, belt expectations, schedules, milestones, and resources." />
+        content="A clear, mobile-first portal for karate parents with school-specific pages, belt expectations, schedules, milestones, and resources." />
 
     <!-- Favicon placeholder -->
     <link rel="icon" href="data:,">
@@ -175,7 +175,7 @@
         .schools {
             display: grid;
             grid-template-columns: 1fr;
-            /* <-- single column by default */
+            /* single column at all sizes */
             gap: 14px;
             margin-top: 18px;
         }
@@ -183,7 +183,7 @@
         /* Card block */
         .card {
             grid-column: 1 / -1;
-            /* full width in the single-column flow */
+            /* full width */
             background: var(--panel);
             border: 1px solid rgba(255, 255, 255, .07);
             border-radius: var(--radius);
@@ -245,7 +245,7 @@
 
         /* =========================
      RESPONSIVE UPSHIFTS
-     (scale up to 2 cols, then 3 cols)
+     (kept, but forced to 1 column)
      ========================= */
         @media (min-width:640px) {
 
@@ -254,11 +254,13 @@
             .tiles,
             .quick-links,
             .schools {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
+                /* force single column */
             }
 
             .info-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
+                /* force single column */
             }
         }
 
@@ -269,11 +271,12 @@
             .tiles,
             .quick-links,
             .schools {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: 1fr;
+                /* force single column */
             }
 
-            /* info blocks stay 2-up on desktop unless you want 3-up as well */
-            /* .info-grid{ grid-template-columns:repeat(3, 1fr); } */
+            /* info-grid stays single column on desktop as requested */
+            /* .info-grid { grid-template-columns: 1fr; } */
         }
 
         /* =========================
@@ -349,7 +352,7 @@
                 <h2>Welcome! 👋</h2>
                 <p>Hi, I'm Shonal Gangopadhyay, but you can call me Mr. G. This is not an official National Karate
                     website! This is for me to share with my students' parents without having to print anything out 😉
-                    This site gives parents a clear, school‑specific roadmap so every student knows what to practice,
+                    This site gives parents a clear, school-specific roadmap so every student knows what to practice,
                     what to expect at each belt, and how to be ready for success.</p>
             </div>
         </section>
