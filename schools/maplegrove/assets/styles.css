@@ -1,0 +1,213 @@
+/* ===== Base + Theme (shared across all pages) ===== */
+:root {
+    /* Dark theme palette you’ve been using */
+    --bg: #0f172a;
+    --bg-soft: #111827;
+    --panel: #1f2937;
+    --muted: #9ca3af;
+    --text: #e5e7eb;
+    --text-strong: #f9fafb;
+    --accent: #ef4444;
+    --accent-2: #22d3ee;
+
+    /* Layout */
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    --maxw: 1100px;
+
+    /* Typography scale (fluid) */
+    --font-body: clamp(1.05rem, 1rem + 0.6vw, 1.25rem);
+    /* ~16.8px → ~20px+ */
+    --font-small: clamp(.95rem, .9rem + 0.3vw, 1.05rem);
+    --font-h1: clamp(1.9rem, 1.4rem + 2.2vw, 2.6rem);
+    --font-h2: clamp(1.6rem, 1.2rem + 1.6vw, 2.1rem);
+    --font-h3: clamp(1.3rem, 1.05rem + 1.2vw, 1.7rem);
+    --leading: 1.6;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+html {
+    scroll-behavior: smooth
+}
+
+/* Make everything readable on mobile by default */
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: var(--bg);
+    color: var(--text);
+    line-height: var(--leading);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 16px;
+    /* baseline */
+    font-variant-ligatures: contextual common-ligatures;
+}
+
+main,
+.container {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding: 24px clamp(16px, 4vw, 28px);
+}
+
+/* Consistent type across all pages */
+p,
+li,
+dd,
+figcaption {
+    font-size: var(--font-body);
+}
+
+small,
+.small {
+    font-size: var(--font-small);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--text-strong);
+    margin: 0.6em 0 0.35em;
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: var(--font-h1);
+}
+
+h2 {
+    font-size: var(--font-h2);
+}
+
+h3 {
+    font-size: var(--font-h3);
+}
+
+h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* Spacing rhythm */
+p,
+ul,
+ol,
+dl,
+blockquote,
+pre {
+    margin: 0 0 1rem;
+}
+
+ul,
+ol {
+    padding-left: 1.25rem;
+}
+
+/* Links and focus */
+a {
+    color: var(--accent-2);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+:focus-visible {
+    outline: 3px solid var(--accent-2);
+    outline-offset: 2px;
+}
+
+/* Panels / cards */
+.section,
+.panel {
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: clamp(16px, 2.4vw, 24px);
+    margin: 1rem 0;
+}
+
+/* Nav / footer helpers (optional) */
+.nav,
+header,
+footer {
+    background: var(--bg-soft);
+}
+
+/* Tables (if present) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-body);
+}
+
+th,
+td {
+    padding: .65rem .75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+th {
+    text-align: left;
+    color: var(--text-strong);
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Buttons */
+button,
+.btn,
+[role="button"],
+input[type="submit"] {
+    font: inherit;
+    font-size: var(--font-body);
+    color: var(--text);
+    background: linear-gradient(180deg, #ef4444, #dc2626);
+    border: 0;
+    padding: .7rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+button:hover,
+.btn:hover {
+    filter: brightness(1.05);
+}
+
+/* Make sure tiny phone screens stay large enough to read */
+@media (max-width: 430px) {
+    :root {
+        --font-body: clamp(1.1rem, 2.8vw + 1rem, 1.3rem);
+        /* ~17.6–20.8px+ */
+        --font-h1: clamp(2.0rem, 5.5vw + 1.2rem, 2.7rem);
+        --font-h2: clamp(1.7rem, 4.5vw + 1rem, 2.2rem);
+        --font-h3: clamp(1.35rem, 3.5vw + .9rem, 1.75rem);
+    }
+}
+
+/* A “prose” utility you can apply to content areas to normalize spacing */
+.prose>*+* {
+    margin-top: 0.75em;
+}
+
+.prose p {
+    margin: 0;
+}
+
+/* handled by the sibling rule above */
