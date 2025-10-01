@@ -6,16 +6,292 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Maple Grove — Karate Parent Portal</title>
     <meta name="description" content="Maple Grove school page: schedule, belt expectations, and resources." />
-    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+        /* ===== THEME ===== */
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #111827;
+            --panel: #1f2937;
+            --muted: #9ca3af;
+            --text: #e5e7eb;
+            --text-strong: #f9fafb;
+            --accent: #ef4444;
+            --accent-2: #22d3ee;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --maxw: 1100px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        /* Bigger, fluid, readable base size on mobile (never below ~17px) */
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+            font-size: clamp(17px, 2.2vw, 18px);
+            line-height: 1.65;
+            background:
+                radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
+                radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
+                var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: var(--accent-2);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header.site {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(15, 23, 42, .85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
+            box-shadow: 0 4px 18px rgba(34, 211, 238, .25);
+        }
+
+        .brand h1 {
+            margin: 0;
+            /* scale a bit bigger on small screens for legibility */
+            font-size: clamp(1.1rem, 4.5vw, 1.25rem);
+            letter-spacing: .25px;
+            color: var(--text-strong);
+            text-wrap: balance;
+        }
+
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: clamp(.9rem, 3.4vw, 1rem);
+            margin-top: 2px;
+        }
+
+        nav a {
+            padding: 10px 14px;
+            border-radius: 10px;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, .06);
+            text-decoration: none;
+        }
+
+        /* Hero */
+        .hero {
+            margin-top: 18px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            padding: 22px 20px;
+        }
+
+        .hero h2 {
+            margin: 0 0 8px;
+            /* fluid, larger on phones */
+            font-size: clamp(1.35rem, 6vw, 1.8rem);
+            color: var(--text-strong);
+            text-wrap: balance;
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: clamp(1rem, 3.2vw, 1.05rem);
+        }
+
+        /* ===== Cards: ONE-COLUMN + SHORT HEIGHT ===== */
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+
+            /* short + consistent layout */
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            /* slightly taller for readability */
+            padding: 12px 16px;
+            /* bigger touch-friendly padding */
+        }
+
+        .card h3,
+        .card h4,
+        .card p {
+            margin: 0;
+        }
+
+        .card h3 {
+            /* bump title size a bit */
+            font-size: clamp(1.1rem, 4.2vw, 1.2rem);
+            color: var(--text-strong);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            /* easier to tap */
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            color: var(--text-strong);
+            font-weight: 600;
+            letter-spacing: .25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+            text-decoration: none;
+            line-height: 1;
+            /* keep buttons compact */
+        }
+
+        .btn.accent {
+            background: linear-gradient(180deg, rgba(239, 68, 68, .25), rgba(239, 68, 68, .14));
+            border-color: rgba(239, 68, 68, .35);
+        }
+
+        .list {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        /* ===== Schedule table: keep text readable; allow horizontal scroll on mobile */
+        table.schedule {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            font-size: clamp(1rem, 3.2vw, 1.05rem);
+            /* readable cells */
+        }
+
+        .schedule th,
+        .schedule td {
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .schedule thead {
+            background: rgba(255, 255, 255, .05);
+        }
+
+        .schedule tbody tr:nth-child(odd) {
+            background: rgba(255, 255, 255, .03);
+        }
+
+        /* Let the table scroll on narrow screens instead of shrinking text */
+        @media (max-width: 640px) {
+            table.schedule {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        /* Sticky mobile belt bar */
+        .mobile-toc {
+            position: fixed;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            z-index: 50;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(31, 41, 55, .9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .mobile-toc a {
+            font-size: clamp(1rem, 3.6vw, 1.05rem);
+            padding: 10px 14px;
+            /* bigger tap area */
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        /* Optional: scale up nav on the smallest screens for easier tapping */
+        @media (max-width: 400px) {
+            nav a {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-    <header class="nav">
-        <div class="container">
-            <div class="brand" style="display:flex;align-items:center;gap:12px;">
-                <div class="logo" aria-hidden="true"
-                    style="width:40px;height:40px;border-radius:50%;background:linear-gradient(180deg,#ef4444,#22d3ee);">
-                </div>
+    <header class="site">
+        <div class="topbar wrap">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
                 <div>
                     <h1>Karate Parent Portal</h1>
                     <small>Maple Grove</small>
@@ -27,71 +303,62 @@
         </div>
     </header>
 
-    <main id="content" class="container prose">
+    <main id="content" class="wrap">
         <!-- Intro / hero -->
-        <section class="section" aria-labelledby="welcome-title">
-            <h2 id="welcome-title">Welcome to Maple Grove National Karate's Page</h2>
+        <section class="hero">
+            <div class="hero-inner">
+                <h2>Welcome to Maple Grove National Karate's Page</h2>
+            </div>
         </section>
 
-        <!-- Links as simple panels -->
-        <section class="section">
-            <p>
+        <!-- One-column, short cards -->
+        <section class="cards">
+            <article class="card" aria-labelledby="schedule-title">
                 <a href="https://www.nationalkarate.com/wp-content/uploads/2025/02/Brooklyn-Park-Schedule.pdf"
                     target="_blank" rel="noopener noreferrer">
                     Schedule Link (opens in new tab)
                 </a>
-            </p>
+            </article>
+
+            <article class="card">
+                <p><a href="belts/little-masters.html">Little Masters</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/white.html">White</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/gold.html">Gold</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/green.html">Green</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/purple.html">Purple</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/blue.html">Blue</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/red.html">Red</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/brown.html">Brown</a></p>
+            </article>
+
+            <!-- Split black degrees into separate short cards for consistency -->
+            <article class="card">
+                <p><a href="belts/black-1st.html">1st Degree Black</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/black-2nd.html">2nd Degree Black</a></p>
+            </article>
+            <article class="card">
+                <p><a href="belts/black-3rd.html">3rd Degree Black</a></p>
+            </article>
         </section>
 
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/little-masters.html">Little
-                    Masters</a></p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/white.html">White</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/gold.html">Gold</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/green.html">Green</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a
-                    href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/purple.html">Purple</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/blue.html">Blue</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/red.html">Red</a></p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/brown.html">Brown</a>
-            </p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/black-1st.html">1st
-                    Degree Black</a></p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/black-2nd.html">2nd
-                    Degree Black</a></p>
-        </section>
-        <section class="section">
-            <p><a href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/belts/black-3rd.html">3rd
-                    Degree Black</a></p>
-        </section>
-
-        <footer class="nav small">
-            <div class="container">
-                © <span id="year"></span> Maple Grove • Karate Parent Portal
-            </div>
+        <footer class="muted" style="margin:40px 0 18px;">
+            © <span id="year"></span> Maple Grove • Karate Parent Portal
         </footer>
     </main>
 
