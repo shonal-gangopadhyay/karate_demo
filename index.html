@@ -671,43 +671,50 @@
             const progH = progressEl ? progressEl.offsetHeight : 0;
             const gap = 12; // breathing room
             const total = headerH + progH + gap;
-
-            // Expose to CSS for native anchor jumps (if you add `html{scroll-padding-top:var(--sticky-offset)}`)
             document.documentElement.style.setProperty('--sticky-offset', total + 'px');
             return total;
         }
         let currentOffset = setStickyOffset();
-
-        // Keep offset up to date on resize/orientation changes and header size changes
-        window.addEventListener('resize', () => { currentOffset = setStickyOffset(); });
-        window.addEventListener('orientationchange', () => { currentOffset = setStickyOffset(); });
-
-        // If header height can change dynamically (fonts/address bar collapse), observe it
+        window.addEventListener('resize', () => { currentOffset = setStickyOffset(); updateActiveByScroll(); });
+        window.addEventListener('orientationchange', () => { currentOffset = setStickyOffset(); updateActiveByScroll(); });
         if ('ResizeObserver' in window && headerEl) {
-            const ro = new ResizeObserver(() => { currentOffset = setStickyOffset(); });
-            ro.observe(headerEl);
+            new ResizeObserver(() => { currentOffset = setStickyOffset(); updateActiveByScroll(); }).observe(headerEl);
         }
 
         // ===== Smooth scroll that respects the sticky offset
         function smoothScrollToEl(el) {
-            // Read latest value from CSS var (stays correct across resizes)
             const cs = getComputedStyle(document.documentElement);
             const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
-
             const top = el.getBoundingClientRect().top + window.scrollY - off;
             window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        // ===== Link maps
+        const links = [...toc.querySelectorAll('a')];
+        const mobileLinks = [...mobileToc.querySelectorAll('a')];
+        const linkMap = new Map(sections.map(s => [s.id, {
+            desktop: links.find(a => a.getAttribute('href') === `#${s.id}`),
+            mobile: mobileLinks.find(a => a.getAttribute('href') === `#${s.id}`)
+        }]));
+
+        function setActive(id) {
+            const pair = linkMap.get(id);
+            if (!pair) return;
+            links.forEach(a => a.classList.remove('active'));
+            mobileLinks.forEach(a => a.classList.remove('active'));
+            pair.desktop?.classList.add('active');
+            pair.mobile?.classList.add('active');
         }
 
         function enableSmooth(container) {
             container.addEventListener('click', (e) => {
                 const a = e.target.closest('a[href^="#"]');
                 if (!a) return;
-
                 const id = a.getAttribute('href').slice(1);
                 const el = document.getElementById(id);
                 if (!el) return;
-
                 e.preventDefault();
+                setActive(id);              // immediate visual feedback
                 smoothScrollToEl(el);
                 history.replaceState(null, '', `#${id}`);
             });
@@ -721,48 +728,36 @@
             if (!hash) return;
             const target = document.getElementById(hash);
             if (!target) return;
-            // Use a short timeout so layout is settled before computing positions
-            setTimeout(() => smoothScrollToEl(target), 0);
+            setTimeout(() => { smoothScrollToEl(target); setActive(hash); }, 0);
         }
-        // On initial load (if URL already has a hash)
         if (location.hash) scrollToHashTarget();
-        // When hash changes (e.g., external links or manual edits)
         window.addEventListener('hashchange', scrollToHashTarget);
 
-        // ===== Scrollspy (IntersectionObserver)
-        const links = [...toc.querySelectorAll('a')];
-        const mobileLinks = [...mobileToc.querySelectorAll('a')];
-        const linkMap = new Map(sections.map(s => [s.id, {
-            desktop: links.find(a => a.getAttribute('href') === `#${s.id}`),
-            mobile: mobileLinks.find(a => a.getAttribute('href') === `#${s.id}`)
-        }]));
+        // ===== ScrollSpy (deterministic; sticky-offset aware)
+        const sectionEls = sections.map(s => document.getElementById(s.id)).filter(Boolean);
+        let ticking = false;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const id = entry.target.id;
-                const pair = linkMap.get(id);
-                if (!pair) return;
-                const { desktop, mobile } = pair;
-                if (entry.isIntersecting) {
-                    links.forEach(a => a.classList.remove('active'));
-                    mobileLinks.forEach(a => a.classList.remove('active'));
-                    desktop?.classList.add('active');
-                    mobile?.classList.add('active');
+        function updateActiveByScroll() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                const cs = getComputedStyle(document.documentElement);
+                const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
+                const refY = window.scrollY + off + 1; // line just below sticky header
+                let currentId = sectionEls[0]?.id;
+                for (const el of sectionEls) {
+                    if (el.offsetTop <= refY) { currentId = el.id; } else { break; }
                 }
+                if (currentId) setActive(currentId);
+                ticking = false;
             });
-        }, {
-            root: null,
-            // Use the offset to center the trigger window below the sticky header
-            // (numbers are percentages of viewport height; this works well across sizes)
-            rootMargin: '-40% 0px -55% 0px',
-            threshold: 0.01
-        });
-
-        sections.forEach(({ id }) => {
-            const el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
+        }
+        updateActiveByScroll();
+        window.addEventListener('scroll', updateActiveByScroll, { passive: true });
+        window.addEventListener('resize', updateActiveByScroll);
+        window.addEventListener('orientationchange', updateActiveByScroll);
     </script>
+
 
 </body>
 
