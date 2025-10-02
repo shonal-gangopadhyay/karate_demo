@@ -24,6 +24,8 @@
             --radius: 16px;
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
             --maxw: 1100px;
+            --sticky-offset: 88px;
+            /* default; JS below will set the exact value */
 
             /* scroll tracking */
             --progress-height: 4px;
@@ -35,9 +37,22 @@
             box-sizing: border-box
         }
 
-        html,
+        /* Make native #hash jumps stop *below* the sticky header */
+        html {
+            height: 100%;
+            scroll-padding-top: var(--sticky-offset);
+        }
+
         body {
             height: 100%
+        }
+
+        #welcome,
+        #roadmap,
+        #notes,
+        #tournaments,
+        #organization {
+            scroll-margin-top: var(--sticky-offset);
         }
 
         body {
@@ -594,13 +609,13 @@
     </main>
 
     <script>
-        // Footer year
+        // ===== Footer year
         document.getElementById('year').textContent = new Date().getFullYear();
 
         function demoSchool(name) { alert(`${name} page would live at /schools/${slugify(name)}/index.html`); }
         function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
-        /* ===== Scroll progress ===== */
+        // ===== Scroll progress
         const progressBar = document.getElementById('progressBar');
         const setProgress = () => {
             const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -612,10 +627,7 @@
         window.addEventListener('scroll', setProgress, { passive: true });
         window.addEventListener('resize', setProgress);
 
-        /* ===== Build TOCs from in-page sections =====
-           We’ll use these IDs that we added to containers above:
-           #welcome, #roadmap, #notes, #tournaments, #organization
-        */
+        // ===== Build TOCs from in-page sections
         const sections = [
             { id: 'welcome', label: 'Welcome' },
             { id: 'roadmap', label: 'High-level roadmap' },
@@ -641,23 +653,74 @@
         buildToc(toc);
         buildToc(mobileToc, true);
 
-        // Smooth scroll for TOC links
+        // ===== Sticky offset (header + progress bar + gap)
+        const headerEl = document.querySelector('header.site');
+        const progressEl = document.querySelector('.progress-track');
+
+        function setStickyOffset() {
+            const headerH = headerEl ? headerEl.offsetHeight : 0;
+            const progH = progressEl ? progressEl.offsetHeight : 0;
+            const gap = 12; // breathing room
+            const total = headerH + progH + gap;
+
+            // Expose to CSS for native anchor jumps (if you add `html{scroll-padding-top:var(--sticky-offset)}`)
+            document.documentElement.style.setProperty('--sticky-offset', total + 'px');
+            return total;
+        }
+        let currentOffset = setStickyOffset();
+
+        // Keep offset up to date on resize/orientation changes and header size changes
+        window.addEventListener('resize', () => { currentOffset = setStickyOffset(); });
+        window.addEventListener('orientationchange', () => { currentOffset = setStickyOffset(); });
+
+        // If header height can change dynamically (fonts/address bar collapse), observe it
+        if ('ResizeObserver' in window && headerEl) {
+            const ro = new ResizeObserver(() => { currentOffset = setStickyOffset(); });
+            ro.observe(headerEl);
+        }
+
+        // ===== Smooth scroll that respects the sticky offset
+        function smoothScrollToEl(el) {
+            // Read latest value from CSS var (stays correct across resizes)
+            const cs = getComputedStyle(document.documentElement);
+            const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
+
+            const top = el.getBoundingClientRect().top + window.scrollY - off;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+
         function enableSmooth(container) {
             container.addEventListener('click', (e) => {
                 const a = e.target.closest('a[href^="#"]');
                 if (!a) return;
+
                 const id = a.getAttribute('href').slice(1);
                 const el = document.getElementById(id);
                 if (!el) return;
+
                 e.preventDefault();
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                smoothScrollToEl(el);
                 history.replaceState(null, '', `#${id}`);
             });
         }
         enableSmooth(toc);
         enableSmooth(mobileToc);
 
-        /* ===== Scrollspy (IntersectionObserver) ===== */
+        // ===== Handle native hash loads/changes so targets aren't covered
+        function scrollToHashTarget() {
+            const hash = decodeURIComponent(location.hash || '').replace('#', '');
+            if (!hash) return;
+            const target = document.getElementById(hash);
+            if (!target) return;
+            // Use a short timeout so layout is settled before computing positions
+            setTimeout(() => smoothScrollToEl(target), 0);
+        }
+        // On initial load (if URL already has a hash)
+        if (location.hash) scrollToHashTarget();
+        // When hash changes (e.g., external links or manual edits)
+        window.addEventListener('hashchange', scrollToHashTarget);
+
+        // ===== Scrollspy (IntersectionObserver)
         const links = [...toc.querySelectorAll('a')];
         const mobileLinks = [...mobileToc.querySelectorAll('a')];
         const linkMap = new Map(sections.map(s => [s.id, {
@@ -668,20 +731,21 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const id = entry.target.id;
-                const { desktop, mobile } = linkMap.get(id) || {};
-                if (!desktop || !mobile) return;
+                const pair = linkMap.get(id);
+                if (!pair) return;
+                const { desktop, mobile } = pair;
                 if (entry.isIntersecting) {
-                    // remove active from all
                     links.forEach(a => a.classList.remove('active'));
                     mobileLinks.forEach(a => a.classList.remove('active'));
-                    // add to current
-                    desktop.classList.add('active');
-                    mobile.classList.add('active');
+                    desktop?.classList.add('active');
+                    mobile?.classList.add('active');
                 }
             });
         }, {
             root: null,
-            rootMargin: '-40% 0px -55% 0px', // triggers around middle of viewport
+            // Use the offset to center the trigger window below the sticky header
+            // (numbers are percentages of viewport height; this works well across sizes)
+            rootMargin: '-40% 0px -55% 0px',
             threshold: 0.01
         });
 
@@ -690,6 +754,7 @@
             if (el) observer.observe(el);
         });
     </script>
+
 </body>
 
 </html>
