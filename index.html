@@ -7,8 +7,6 @@
     <title>Karate Parent Portal</title>
     <meta name="description"
         content="A clear, mobile-first portal for karate parents with school-specific pages, belt expectations, schedules, milestones, and resources." />
-
-    <!-- Favicon placeholder -->
     <link rel="icon" href="data:,">
 
     <style>
@@ -25,7 +23,12 @@
             --warn: #f59e0b;
             --radius: 16px;
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-            --maxw: 1100px
+            --maxw: 1100px;
+
+            /* scroll tracking */
+            --progress-height: 4px;
+            --progress: 0%;
+            /* updated via JS */
         }
 
         * {
@@ -41,13 +44,23 @@
             margin: 0;
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
             background:
+                /* subtle svg grid pattern */
                 radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
                 radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
-                var(--bg);
+                /* dark overlay to keep contrast */
+                linear-gradient(180deg, rgba(15, 23, 42, .92), rgba(15, 23, 42, .92)),
+                /* SVG grid */
+                url('data:image/svg+xml;utf8,\
+          <svg xmlns="http://www.w3.org/2000/svg" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\">\
+            <rect width=\"40\" height=\"40\" fill=\"%230f172a\"/>\
+            <path d=\"M0 40H40M40 0V40M0 0H40M0 0V40\" stroke=\"%23ffffff\" stroke-opacity=\"0.04\"/>\
+          </svg>');
+            background-attachment: fixed;
+            background-size: auto, auto, auto, 40px 40px;
             color: var(--text);
             line-height: 1.55;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale
+            -moz-osx-font-smoothing: grayscale;
         }
 
         a {
@@ -65,13 +78,32 @@
             padding: 20px
         }
 
+        /* ====== Scroll progress bar (top) ====== */
+        .progress-track {
+            position: sticky;
+            /* stays under header */
+            top: 0;
+            z-index: 60;
+            height: var(--progress-height);
+            background: rgba(255, 255, 255, .06);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: var(--progress);
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            box-shadow: 0 0 12px rgba(34, 211, 238, .35);
+            transition: width .08s linear;
+        }
+
         header.site {
             position: sticky;
             top: 0;
-            z-index: 40;
+            z-index: 70;
             background: rgba(15, 23, 42, .85);
             backdrop-filter: blur(6px);
-            border-bottom: 1px solid rgba(255, 255, 255, .06)
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
         }
 
         .topbar {
@@ -79,7 +111,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 14px 20px
+            padding: 14px 20px;
         }
 
         .brand {
@@ -94,7 +126,7 @@
             border-radius: 50%;
             background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
             box-shadow: 0 4px 18px rgba(34, 211, 238, .25);
-            flex: 0 0 auto
+            flex: 0 0 auto;
         }
 
         .brand h1 {
@@ -127,7 +159,7 @@
             border: 1px solid rgba(255, 255, 255, .06);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            overflow: hidden
+            overflow: hidden;
         }
 
         .hero-inner {
@@ -155,11 +187,11 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 14px;
-            margin-top: 18px
+            margin-top: 18px;
         }
 
         .card {
-            grid-column: 1 / -1;
+            grid-column: 1/-1;
             background: var(--panel);
             border: 1px solid rgba(255, 255, 255, .07);
             border-radius: var(--radius);
@@ -167,7 +199,7 @@
             padding: 16px;
             transition: transform .15s ease, box-shadow .2s ease;
             width: 100%;
-            max-width: 100%
+            max-width: 100%;
         }
 
         .card:hover {
@@ -207,7 +239,7 @@
             font-weight: 600;
             letter-spacing: .25px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
-            cursor: pointer
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -254,15 +286,67 @@
             overflow: hidden;
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
-            border: 0
+            border: 0;
         }
 
+        /* ===== Scrollspy: desktop sidebar ===== */
+        .toc {
+            position: sticky;
+            top: calc(56px + var(--progress-height) + 12px);
+            /* under header + progress */
+            margin-top: 18px;
+            align-self: start;
+            background: rgba(31, 41, 55, .6);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            padding: 10px;
+            max-height: calc(100vh - 120px);
+            overflow: auto;
+        }
+
+        .toc h4 {
+            margin: 6px 8px 8px;
+            font-size: .9rem;
+            color: var(--muted);
+            font-weight: 600;
+            letter-spacing: .3px;
+        }
+
+        .toc a {
+            display: block;
+            padding: 8px 10px;
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .toc a:hover {
+            background: rgba(255, 255, 255, .06)
+        }
+
+        .toc a.active {
+            background: linear-gradient(180deg, rgba(34, 211, 238, .16), rgba(34, 211, 238, .08));
+            border-color: rgba(34, 211, 238, .25);
+            color: var(--text-strong);
+        }
+
+        /* 2-column layout on wide screens: TOC + content */
+        @media (min-width: 1100px) {
+            .page-grid {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                gap: 18px;
+            }
+        }
+
+        /* ===== Mobile quick nav (bottom pill) ===== */
         .mobile-toc {
             position: fixed;
             left: 0;
             right: 0;
             bottom: 10px;
-            z-index: 50;
+            z-index: 80;
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -280,10 +364,16 @@
             padding: 8px 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, .06);
-            border: 1px solid rgba(255, 255, 255, .08)
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-decoration: none;
+        }
+
+        @media (min-width: 1100px) {
+            .mobile-toc {
+                display: none;
+            }
         }
     </style>
-
 </head>
 
 <body>
@@ -304,174 +394,301 @@
                 </a>
             </nav>
         </div>
+        <!-- Progress bar sits right under the sticky header -->
+        <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
     </header>
 
     <main id="content" class="wrap">
-        <section class="hero">
-            <div class="hero-inner">
-                <h2>Welcome</h2>
-                <p>
-                    I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National Karate
-                    site)
-                    to help parents track what to practice, what classes cover, and how to stay ready for
-                    testing—organized
-                    by school and belt.
-                </p>
+        <div class="page-grid">
+            <!-- Desktop scrollspy TOC (auto-generated) -->
+            <aside class="toc" id="toc" aria-labelledby="toc-title">
+                <h4 id="toc-title">On this page</h4>
+                <!-- links injected by JS -->
+            </aside>
+
+            <div>
+                <section class="hero" id="welcome">
+                    <div class="hero-inner">
+                        <h2>Welcome</h2>
+                        <p>
+                            I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
+                            Karate
+                            site)
+                            to help parents track what to practice, what classes cover, and how to stay ready for
+                            testing—organized
+                            by school and belt.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="info-grid">
+                    <div class="info" id="roadmap">
+                        <h3>High-level roadmap</h3>
+                        <ul class="list">
+                            <li><strong>New students:</strong> Intro program covering fundamentals—stances, strikes,
+                                kicks,
+                                forms, and self-defense—plus life skills (respect, focus, discipline).</li>
+                            <li><strong>White & Gold:</strong> Foundation work and class habits; emphasis on basics and
+                                etiquette.</li>
+                            <li><strong>Green:</strong> Add sparring (marked with * on schedules). Purchase sparring
+                                gear
+                                through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
+                            <li><strong>Purple:</strong> Continue form and sparring; skills typically accelerate with
+                                consistency.</li>
+                            <li><strong>Blue:</strong> Begin bo staff in form class (school-purchased equipment). Learn
+                                safe,
+                                controlled weapon handling.</li>
+                            <li><strong>Red:</strong> Advanced preparation toward Black Belt; refine all fundamentals
+                                and add
+                                new material (e.g., Zang Do Moon).</li>
+                            <li><strong>Brown:</strong> Train Discovery (bo) and, at some schools, a musical form (e.g.,
+                                Beethoven); focused Black Belt prep.</li>
+                            <li><strong>1st Degree Black:</strong> Mastery of basics with expanded curriculum—new
+                                weapons,
+                                deeper self-defense, performance options.</li>
+                            <li><strong>2nd Degree Black:</strong> Advanced proficiency and leadership; many assist with
+                                teaching.</li>
+                            <li><strong>3rd Degree Black:</strong> High-level technical skill, coaching, and mentorship.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="notes">
+                        <h3>Quick notes</h3>
+                        <p>If you have questions, ask your school director or instructor.</p>
+                        <ul class="list">
+                            <li>Sparring gear is purchased through your NK school.</li>
+                            <li>Bo (Blue Belt), kamas and bokken (Black Belt) are purchased through your school.</li>
+                            <li><strong>Recommendation:</strong> Bring <em>all</em> required gear to every class.</li>
+                            <li>Clean sparring gear regularly.</li>
+                            <li>Treat the bo as a weapon—use care and respect.</li>
+                            <li>No sibling-vs-sibling sparring.</li>
+                            <li>During the school year, wear full uniform to form classes. For summer and all sparring
+                                classes:
+                                full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require
+                                the
+                                current year’s shirt).</li>
+                            <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
+                                Blue/red-trim options may also be available.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="tournaments">
+                        <h3>Tournaments</h3>
+                        <p>
+                            NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
+                            Intramurals/Team events and Diamond Nationals.
+                        </p>
+                        <ul class="list">
+                            <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
+                            <li>You’ll receive your ring assignment and report time.</li>
+                            <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
+                                Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically
+                                Black
+                                Belt, sometimes Brown for musical).</li>
+                            <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
+                                Sparring (when eligible).</li>
+                        </ul>
+                        <p><strong>2025 dates</strong></p>
+                        <ul class="list">
+                            <li>Diamond Nationals — October 10–11 (Fri–Sat)</li>
+                            <li>NCKA Finals — November 16 (Sun)</li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="organization">
+                        <h3>How this site is organized</h3>
+                        <p>
+                            Choose your school, then jump to a belt. Each belt page follows the same structure:
+                            <em>Class focus</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources
+                                (videos)</em>, and
+                            <em>Testing requirements</em>. Maple Grove and Apple Valley are the first schools being
+                            built out.
+                        </p>
+
+                        <div class="cards">
+                            <article class="card">
+                                <h3>Albertville</h3>
+                                <div class="meta">Mrs. Boone</div>
+                                <div class="actions">
+                                    <a class="btn accent" href="#"
+                                        onclick="demoSchool('Albertville'); return false;">Visit
+                                        school page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>Andover</h3>
+                                <div class="meta">Ms. Lomasney and Mr. Sherve</div>
+                                <div class="actions">
+                                    <a class="btn accent" href="#" onclick="demoSchool('Andover'); return false;">Visit
+                                        school
+                                        page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>Apple Valley</h3>
+                                <div class="meta">Mr. and Mrs. Albertson</div>
+                                <div class="actions">
+                                    <a class="btn accent"
+                                        href="https://shonal-gangopadhyay.github.io/karate_demo/schools/applevalley/index.html">Visit
+                                        school page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>Eden Prairie</h3>
+                                <div class="meta">Mr. Hill</div>
+                                <div class="actions">
+                                    <a class="btn accent" href="#"
+                                        onclick="demoSchool('Eden Prairie'); return false;">Visit
+                                        school page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>Maple Grove</h3>
+                                <div class="meta">Mr. Boone</div>
+                                <div class="actions">
+                                    <a class="btn accent"
+                                        href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/index.html">Visit
+                                        school page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>Ramsey</h3>
+                                <div class="meta">Mr. Sutherland and Ms. Babler</div>
+                                <div class="actions">
+                                    <a class="btn accent" href="#" onclick="demoSchool('Ramsey'); return false;">Visit
+                                        school
+                                        page</a>
+                                </div>
+                            </article>
+
+                            <article class="card">
+                                <h3>South Minneapolis</h3>
+                                <div class="meta">Ms. Lemon</div>
+                                <div class="actions">
+                                    <a class="btn accent" href="#"
+                                        onclick="demoSchool('South Minneapolis'); return false;">Visit school page</a>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <footer>
+                    <p>© <span id="year"></span> Karate Parent Portal • Built for clarity and momentum</p>
+                </footer>
             </div>
-        </section>
+        </div>
 
-        <section class="info-grid">
-            <div class="info">
-                <h3>High-level roadmap</h3>
-                <ul class="list">
-                    <li><strong>New students:</strong> Intro program covering fundamentals—stances, strikes, kicks,
-                        forms, and self-defense—plus life skills (respect, focus, discipline).</li>
-                    <li><strong>White & Gold:</strong> Foundation work and class habits; emphasis on basics and
-                        etiquette.</li>
-                    <li><strong>Green:</strong> Add sparring (marked with * on schedules). Purchase sparring gear
-                        through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
-                    <li><strong>Purple:</strong> Continue form and sparring; skills typically accelerate with
-                        consistency.</li>
-                    <li><strong>Blue:</strong> Begin bo staff in form class (school-purchased equipment). Learn safe,
-                        controlled weapon handling.</li>
-                    <li><strong>Red:</strong> Advanced preparation toward Black Belt; refine all fundamentals and add
-                        new material (e.g., Zang Do Moon).</li>
-                    <li><strong>Brown:</strong> Train Discovery (bo) and, at some schools, a musical form (e.g.,
-                        Beethoven); focused Black Belt prep.</li>
-                    <li><strong>1st Degree Black:</strong> Mastery of basics with expanded curriculum—new weapons,
-                        deeper self-defense, performance options.</li>
-                    <li><strong>2nd Degree Black:</strong> Advanced proficiency and leadership; many assist with
-                        teaching.</li>
-                    <li><strong>3rd Degree Black:</strong> High-level technical skill, coaching, and mentorship.</li>
-                </ul>
-            </div>
-
-            <div class="info">
-                <h3>Quick notes</h3>
-                <p>If you have questions, ask your school director or instructor.</p>
-                <ul class="list">
-                    <li>Sparring gear is purchased through your NK school.</li>
-                    <li>Bo (Blue Belt), kamas and bokken (Black Belt) are purchased through your school.</li>
-                    <li><strong>Recommendation:</strong> Bring <em>all</em> required gear to every class.</li>
-                    <li>Clean sparring gear regularly.</li>
-                    <li>Treat the bo as a weapon—use care and respect.</li>
-                    <li>No sibling-vs-sibling sparring.</li>
-                    <li>During the school year, wear full uniform to form classes. For summer and all sparring classes:
-                        full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require the
-                        current year’s shirt).</li>
-                    <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
-                        Blue/red-trim options may also be available.</li>
-                </ul>
-            </div>
-
-            <div class="info">
-                <h3>Tournaments</h3>
-                <p>
-                    NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
-                    Intramurals/Team events and Diamond Nationals.
-                </p>
-                <ul class="list">
-                    <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
-                    <li>You’ll receive your ring assignment and report time.</li>
-                    <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
-                        Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically Black
-                        Belt, sometimes Brown for musical).</li>
-                    <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
-                        Sparring (when eligible).</li>
-                </ul>
-                <p><strong>2025 dates</strong></p>
-                <ul class="list">
-                    <li>Diamond Nationals — October 10–11 (Fri–Sat)</li>
-                    <li>NCKA Finals — November 16 (Sun)</li>
-                </ul>
-            </div>
-
-            <div class="info">
-                <h3>How this site is organized</h3>
-                <p>
-                    Choose your school, then jump to a belt. Each belt page follows the same structure:
-                    <em>Class focus</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources (videos)</em>, and
-                    <em>Testing requirements</em>. Maple Grove and Apple Valley are the first schools being built out.
-                </p>
-
-                <div class="cards">
-                    <article class="card">
-                        <h3>Albertville</h3>
-                        <div class="meta">Mrs. Boone</div>
-                        <div class="actions">
-                            <a class="btn accent" href="#" onclick="demoSchool('Albertville'); return false;">Visit
-                                school page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>Andover</h3>
-                        <div class="meta">Ms. Lomasney and Mr. Sherve</div>
-                        <div class="actions">
-                            <a class="btn accent" href="#" onclick="demoSchool('Andover'); return false;">Visit school
-                                page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>Apple Valley</h3>
-                        <div class="meta">Mr. and Mrs. Albertson</div>
-                        <div class="actions">
-                            <a class="btn accent"
-                                href="https://shonal-gangopadhyay.github.io/karate_demo/schools/applevalley/index.html">Visit
-                                school page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>Eden Prairie</h3>
-                        <div class="meta">Mr. Hill</div>
-                        <div class="actions">
-                            <a class="btn accent" href="#" onclick="demoSchool('Eden Prairie'); return false;">Visit
-                                school page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>Maple Grove</h3>
-                        <div class="meta">Mr. Boone</div>
-                        <div class="actions">
-                            <a class="btn accent"
-                                href="https://shonal-gangopadhyay.github.io/karate_demo/schools/maplegrove/index.html">Visit
-                                school page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>Ramsey</h3>
-                        <div class="meta">Mr. Sutherland and Ms. Babler</div>
-                        <div class="actions">
-                            <a class="btn accent" href="#" onclick="demoSchool('Ramsey'); return false;">Visit school
-                                page</a>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <h3>South Minneapolis</h3>
-                        <div class="meta">Ms. Lemon</div>
-                        <div class="actions">
-                            <a class="btn accent" href="#"
-                                onclick="demoSchool('South Minneapolis'); return false;">Visit school page</a>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <p>© <span id="year"></span> Karate Parent Portal • Built for clarity and momentum</p>
-        </footer>
+        <!-- Mobile quick nav (auto-generated) -->
+        <nav class="mobile-toc" id="mobileToc" aria-label="Quick navigation">
+            <!-- links injected by JS -->
+        </nav>
     </main>
 
     <script>
+        // Footer year
         document.getElementById('year').textContent = new Date().getFullYear();
+
         function demoSchool(name) { alert(`${name} page would live at /schools/${slugify(name)}/index.html`); }
         function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+        /* ===== Scroll progress ===== */
+        const progressBar = document.getElementById('progressBar');
+        const setProgress = () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = Math.max(0, Math.min(1, docHeight ? (scrollTop / docHeight) : 0));
+            progressBar.style.width = (pct * 100).toFixed(2) + '%';
+        };
+        setProgress();
+        window.addEventListener('scroll', setProgress, { passive: true });
+        window.addEventListener('resize', setProgress);
+
+        /* ===== Build TOCs from in-page sections =====
+           We’ll use these IDs that we added to containers above:
+           #welcome, #roadmap, #notes, #tournaments, #organization
+        */
+        const sections = [
+            { id: 'welcome', label: 'Welcome' },
+            { id: 'roadmap', label: 'High-level roadmap' },
+            { id: 'notes', label: 'Quick notes' },
+            { id: 'tournaments', label: 'Tournaments' },
+            { id: 'organization', label: 'How this site is organized' },
+        ];
+
+        const toc = document.getElementById('toc');
+        const mobileToc = document.getElementById('mobileToc');
+
+        function buildToc(container, isMobile = false) {
+            const frag = document.createDocumentFragment();
+            sections.forEach(({ id, label }) => {
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = label;
+                if (isMobile) a.setAttribute('role', 'button');
+                frag.appendChild(a);
+            });
+            container.appendChild(frag);
+        }
+        buildToc(toc);
+        buildToc(mobileToc, true);
+
+        // Smooth scroll for TOC links
+        function enableSmooth(container) {
+            container.addEventListener('click', (e) => {
+                const a = e.target.closest('a[href^="#"]');
+                if (!a) return;
+                const id = a.getAttribute('href').slice(1);
+                const el = document.getElementById(id);
+                if (!el) return;
+                e.preventDefault();
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', `#${id}`);
+            });
+        }
+        enableSmooth(toc);
+        enableSmooth(mobileToc);
+
+        /* ===== Scrollspy (IntersectionObserver) ===== */
+        const links = [...toc.querySelectorAll('a')];
+        const mobileLinks = [...mobileToc.querySelectorAll('a')];
+        const linkMap = new Map(sections.map(s => [s.id, {
+            desktop: links.find(a => a.getAttribute('href') === `#${s.id}`),
+            mobile: mobileLinks.find(a => a.getAttribute('href') === `#${s.id}`)
+        }]));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const id = entry.target.id;
+                const { desktop, mobile } = linkMap.get(id) || {};
+                if (!desktop || !mobile) return;
+                if (entry.isIntersecting) {
+                    // remove active from all
+                    links.forEach(a => a.classList.remove('active'));
+                    mobileLinks.forEach(a => a.classList.remove('active'));
+                    // add to current
+                    desktop.classList.add('active');
+                    mobile.classList.add('active');
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '-40% 0px -55% 0px', // triggers around middle of viewport
+            threshold: 0.01
+        });
+
+        sections.forEach(({ id }) => {
+            const el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
     </script>
 </body>
 
