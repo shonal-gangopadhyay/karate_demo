@@ -27,7 +27,10 @@
 
             /* JS computes this exactly: header + progress + small gap */
             --sticky-offset: 88px;
-
+            /* fallback for first paint; JS sets exact height */
+            --header-offset: 96px;
+            /* tiny breathing room for hash/smooth scroll */
+            --anchor-gap: 12px;
             /* scroll tracking */
             --progress-height: 4px;
             --progress: 0%;
@@ -40,7 +43,7 @@
         /* Make native #hash jumps stop *below* the fixed header */
         html {
             height: 100%;
-            scroll-padding-top: var(--sticky-offset);
+            scroll-padding-top: var(--header-offset);
         }
 
         body {
@@ -53,7 +56,7 @@
         #notes,
         #tournaments,
         #organization {
-            scroll-margin-top: var(--sticky-offset);
+            scroll-margin-top: var(--header-offset);
         }
 
         body {
@@ -174,7 +177,7 @@
         /* Push the page content down so it isn't under the fixed header.
        sticky-offset = header + progress + small gap; subtract the gap (~12px) */
         main {
-            padding-top: calc(var(--sticky-offset) - 12px);
+            padding-top: calc(var(--header-offset) - 12px);
         }
 
         .hero {
@@ -323,7 +326,7 @@
         /* ===== Scrollspy: desktop sidebar ===== */
         .toc {
             position: sticky;
-            top: var(--sticky-offset);
+            top: var(--header-offset);
             /* stick below fixed header */
             margin-top: 18px;
             align-self: start;
