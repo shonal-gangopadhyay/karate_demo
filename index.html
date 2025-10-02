@@ -24,20 +24,20 @@
             --radius: 16px;
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
             --maxw: 1100px;
+
+            /* JS computes this exactly: header + progress + small gap */
             --sticky-offset: 88px;
-            /* default; JS below will set the exact value */
 
             /* scroll tracking */
             --progress-height: 4px;
             --progress: 0%;
-            /* updated via JS */
         }
 
         * {
             box-sizing: border-box
         }
 
-        /* Make native #hash jumps stop *below* the sticky header */
+        /* Make native #hash jumps stop *below* the fixed header */
         html {
             height: 100%;
             scroll-padding-top: var(--sticky-offset);
@@ -47,6 +47,7 @@
             height: 100%
         }
 
+        /* Sections also honor the offset for programmatic jumps */
         #welcome,
         #roadmap,
         #notes,
@@ -59,16 +60,13 @@
             margin: 0;
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
             background:
-                /* subtle svg grid pattern */
                 radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
                 radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
-                /* dark overlay to keep contrast */
                 linear-gradient(180deg, rgba(15, 23, 42, .92), rgba(15, 23, 42, .92)),
-                /* SVG grid */
                 url('data:image/svg+xml;utf8,\
-          <svg xmlns="http://www.w3.org/2000/svg" width=\"40\" height=\"40\" viewBox=\"0 0 40 40\">\
-            <rect width=\"40\" height=\"40\" fill=\"%230f172a\"/>\
-            <path d=\"M0 40H40M40 0V40M0 0H40M0 0V40\" stroke=\"%23ffffff\" stroke-opacity=\"0.04\"/>\
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\
+            <rect width="40" height="40" fill="%230f172a"/>\
+            <path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\
           </svg>');
             background-attachment: fixed;
             background-size: auto, auto, auto, 40px 40px;
@@ -93,29 +91,15 @@
             padding: 20px
         }
 
-        /* ====== Scroll progress bar (top) ====== */
-        .progress-track {
-            position: sticky;
-            /* stays under header */
-            top: 0;
-            z-index: 60;
-            height: var(--progress-height);
-            background: rgba(255, 255, 255, .06);
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: var(--progress);
-            background: linear-gradient(90deg, var(--accent-2), var(--accent));
-            box-shadow: 0 0 12px rgba(34, 211, 238, .35);
-            transition: width .08s linear;
-        }
-
+        /* ====== Header: fixed (always visible) ====== */
         header.site {
-            position: sticky;
+            position: fixed;
+            /* was: sticky */
             top: 0;
-            z-index: 70;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            /* above everything else */
             background: rgba(15, 23, 42, .85);
             backdrop-filter: blur(6px);
             border-bottom: 1px solid rgba(255, 255, 255, .06);
@@ -127,6 +111,9 @@
             justify-content: space-between;
             gap: 12px;
             padding: 14px 20px;
+            max-width: var(--maxw);
+            margin: 0 auto;
+            /* keep width aligned with .wrap */
         }
 
         .brand {
@@ -166,6 +153,28 @@
         nav a:hover {
             background: rgba(255, 255, 255, .06);
             text-decoration: none
+        }
+
+        /* ====== Progress bar (inside fixed header) ====== */
+        .progress-track {
+            /* no need for sticky when inside a fixed header */
+            height: var(--progress-height);
+            background: rgba(255, 255, 255, .06);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: var(--progress);
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            box-shadow: 0 0 12px rgba(34, 211, 238, .35);
+            transition: width .08s linear;
+        }
+
+        /* Push the page content down so it isn't under the fixed header.
+       sticky-offset = header + progress + small gap; subtract the gap (~12px) */
+        main {
+            padding-top: calc(var(--sticky-offset) - 12px);
         }
 
         .hero {
@@ -292,13 +301,11 @@
             }
         }
 
-        /* put this with your other media queries */
-        @media (max-width: 1099px) {
+        /* Hide desktop sidebar TOC on mobile */
+        @media (max-width:1099px) {
             .toc {
                 display: none !important;
             }
-
-            /* hide desktop sidebar TOC */
         }
 
         .sr-only {
@@ -316,8 +323,8 @@
         /* ===== Scrollspy: desktop sidebar ===== */
         .toc {
             position: sticky;
-            top: calc(56px + var(--progress-height) + 12px);
-            /* under header + progress */
+            top: var(--sticky-offset);
+            /* stick below fixed header */
             margin-top: 18px;
             align-self: start;
             background: rgba(31, 41, 55, .6);
@@ -356,7 +363,7 @@
         }
 
         /* 2-column layout on wide screens: TOC + content */
-        @media (min-width: 1100px) {
+        @media (min-width:1100px) {
             .page-grid {
                 display: grid;
                 grid-template-columns: 260px 1fr;
@@ -392,7 +399,7 @@
             text-decoration: none;
         }
 
-        @media (min-width: 1100px) {
+        @media (min-width:1100px) {
             .mobile-toc {
                 display: none;
             }
@@ -404,7 +411,7 @@
     <a class="sr-only" href="#content">Skip to content</a>
 
     <header class="site">
-        <div class="topbar wrap">
+        <div class="topbar">
             <div class="brand">
                 <div class="logo" aria-hidden="true"></div>
                 <div>
@@ -418,7 +425,7 @@
                 </a>
             </nav>
         </div>
-        <!-- Progress bar sits right under the sticky header -->
+        <!-- Progress bar sits right under the fixed header topbar -->
         <div class="progress-track" aria-hidden="true">
             <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -669,7 +676,7 @@
         function setStickyOffset() {
             const headerH = headerEl ? headerEl.offsetHeight : 0;
             const progH = progressEl ? progressEl.offsetHeight : 0;
-            const gap = 12; // breathing room
+            const gap = 12; // breathing room for anchor targets
             const total = headerH + progH + gap;
             document.documentElement.style.setProperty('--sticky-offset', total + 'px');
             return total;
@@ -681,7 +688,7 @@
             new ResizeObserver(() => { currentOffset = setStickyOffset(); updateActiveByScroll(); }).observe(headerEl);
         }
 
-        // ===== Smooth scroll that respects the sticky offset
+        // ===== Smooth scroll that respects the fixed header offset
         function smoothScrollToEl(el) {
             const cs = getComputedStyle(document.documentElement);
             const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
@@ -733,7 +740,7 @@
         if (location.hash) scrollToHashTarget();
         window.addEventListener('hashchange', scrollToHashTarget);
 
-        // ===== ScrollSpy (deterministic; sticky-offset aware)
+        // ===== ScrollSpy (deterministic; fixed-header aware)
         const sectionEls = sections.map(s => document.getElementById(s.id)).filter(Boolean);
         let ticking = false;
 
@@ -743,7 +750,7 @@
             requestAnimationFrame(() => {
                 const cs = getComputedStyle(document.documentElement);
                 const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
-                const refY = window.scrollY + off + 1; // line just below sticky header
+                const refY = window.scrollY + off + 1; // line just below the fixed header
                 let currentId = sectionEls[0]?.id;
                 for (const el of sectionEls) {
                     if (el.offsetTop <= refY) { currentId = el.id; } else { break; }
@@ -757,8 +764,6 @@
         window.addEventListener('resize', updateActiveByScroll);
         window.addEventListener('orientationchange', updateActiveByScroll);
     </script>
-
-
 </body>
 
 </html>
