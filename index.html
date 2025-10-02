@@ -28,7 +28,7 @@
             --header-offset: 96px;
             /* fallback */
             --anchor-gap: 0px;
-            /* set to 8–12px if you want extra space on jumps */
+            /* optional extra space on jumps */
 
             --progress-height: 4px;
             --progress: 0%;
@@ -363,6 +363,42 @@
             white-space: nowrap;
             border: 0;
         }
+
+        /* ===========================
+           Mobile fade-up animations
+           =========================== */
+        @media (max-width: 1099px) {
+            :root {
+                --reveal-distance: 10px;
+                --reveal-duration: .45s;
+                --reveal-ease: cubic-bezier(.22, .61, .36, 1);
+            }
+
+            /* Start hidden with slight Y offset */
+            .reveal {
+                opacity: 0;
+                transform: translate3d(0, var(--reveal-distance), 0);
+                transition:
+                    opacity var(--reveal-duration) var(--reveal-ease),
+                    transform var(--reveal-duration) var(--reveal-ease);
+                will-change: opacity, transform;
+            }
+
+            /* Visible state */
+            .reveal.is-visible {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -695,6 +731,39 @@
 
         // Keep progress accurate post-load
         window.addEventListener('load', setProgress);
+
+        /* ==========================================
+           Mobile-only fade-up: apply & observe blocks
+           ========================================== */
+        (function () {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isMobile = window.matchMedia('(max-width: 1099px)').matches;
+            if (prefersReduced || !isMobile) return;
+
+            // Choose which elements are "text blocks"
+            const selectors = [
+                '.hero',          // welcome panel
+                '.info',          // each info panel (roadmap, notes, tournaments, organization)
+                '.cards',         // the cards container
+                '.card'           // individual cards (schools)
+            ].join(',');
+
+            const blocks = Array.from(document.querySelectorAll(selectors));
+
+            // Add base class
+            blocks.forEach(el => el.classList.add('reveal'));
+
+            // IntersectionObserver for fade-up
+            const io = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target); // one-time reveal
+                });
+            }, { threshold: 0.1, root: null, rootMargin: '0px 0px -10% 0px' });
+
+            blocks.forEach(el => io.observe(el));
+        })();
     </script>
 </body>
 
