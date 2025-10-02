@@ -25,8 +25,11 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
             --maxw: 1100px;
 
-            /* JS computes this exactly: header + progress + small gap */
-            --sticky-offset: 88px;
+            /* NEW: layout vs scroll vars */
+            --header-offset: 96px;
+            /* fallback; JS sets exact header + progress */
+            --anchor-gap: 12px;
+            /* small breathing room for anchor jumps */
 
             /* scroll tracking */
             --progress-height: 4px;
@@ -37,23 +40,23 @@
             box-sizing: border-box
         }
 
-        /* Make native #hash jumps stop *below* the fixed header */
+        /* Native #hash jumps stop below the fixed header */
         html {
             height: 100%;
-            scroll-padding-top: var(--sticky-offset);
+            scroll-padding-top: var(--header-offset);
         }
 
         body {
             height: 100%
         }
 
-        /* Sections also honor the offset for programmatic jumps */
+        /* Sections also honor the header offset */
         #welcome,
         #roadmap,
         #notes,
         #tournaments,
         #organization {
-            scroll-margin-top: var(--sticky-offset);
+            scroll-margin-top: var(--header-offset);
         }
 
         body {
@@ -94,12 +97,10 @@
         /* ====== Header: fixed (always visible) ====== */
         header.site {
             position: fixed;
-            /* was: sticky */
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            /* above everything else */
             background: rgba(15, 23, 42, .85);
             backdrop-filter: blur(6px);
             border-bottom: 1px solid rgba(255, 255, 255, .06);
@@ -113,7 +114,6 @@
             padding: 14px 20px;
             max-width: var(--maxw);
             margin: 0 auto;
-            /* keep width aligned with .wrap */
         }
 
         .brand {
@@ -155,9 +155,8 @@
             text-decoration: none
         }
 
-        /* ====== Progress bar (inside fixed header) ====== */
+        /* Progress bar lives inside fixed header */
         .progress-track {
-            /* no need for sticky when inside a fixed header */
             height: var(--progress-height);
             background: rgba(255, 255, 255, .06);
             overflow: hidden;
@@ -171,10 +170,9 @@
             transition: width .08s linear;
         }
 
-        /* Push the page content down so it isn't under the fixed header.
-       sticky-offset = header + progress + small gap; subtract the gap (~12px) */
+        /* Push page content below fixed header (no subtraction) */
         main {
-            padding-top: calc(var(--sticky-offset) - 12px);
+            padding-top: var(--header-offset);
         }
 
         .hero {
@@ -320,11 +318,10 @@
             border: 0;
         }
 
-        /* ===== Scrollspy: desktop sidebar ===== */
+        /* Desktop sidebar TOC sits below fixed header */
         .toc {
             position: sticky;
-            top: var(--sticky-offset);
-            /* stick below fixed header */
+            top: var(--header-offset);
             margin-top: 18px;
             align-self: start;
             background: rgba(31, 41, 55, .6);
@@ -362,7 +359,6 @@
             color: var(--text-strong);
         }
 
-        /* 2-column layout on wide screens: TOC + content */
         @media (min-width:1100px) {
             .page-grid {
                 display: grid;
@@ -371,7 +367,7 @@
             }
         }
 
-        /* ===== Mobile quick nav (bottom pill) ===== */
+        /* Mobile quick nav */
         .mobile-toc {
             position: fixed;
             left: 0;
@@ -425,7 +421,6 @@
                 </a>
             </nav>
         </div>
-        <!-- Progress bar sits right under the fixed header topbar -->
         <div class="progress-track" aria-hidden="true">
             <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -433,10 +428,8 @@
 
     <main id="content" class="wrap">
         <div class="page-grid">
-            <!-- Desktop scrollspy TOC (auto-generated) -->
             <aside class="toc" id="toc" aria-labelledby="toc-title">
                 <h4 id="toc-title">On this page</h4>
-                <!-- links injected by JS -->
             </aside>
 
             <div>
@@ -446,10 +439,8 @@
                         <p>
                             I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
                             Karate
-                            site)
-                            to help parents track what to practice, what classes cover, and how to stay ready for
-                            testing—organized
-                            by school and belt.
+                            site) to help parents track what to practice, what classes cover, and how to stay ready for
+                            testing—organized by school and belt.
                         </p>
                     </div>
                 </section>
@@ -464,21 +455,17 @@
                             <li><strong>White & Gold:</strong> Foundation work and class habits; emphasis on basics and
                                 etiquette.</li>
                             <li><strong>Green:</strong> Add sparring (marked with * on schedules). Purchase sparring
-                                gear
-                                through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
+                                gear through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
                             <li><strong>Purple:</strong> Continue form and sparring; skills typically accelerate with
                                 consistency.</li>
                             <li><strong>Blue:</strong> Begin bo staff in form class (school-purchased equipment). Learn
-                                safe,
-                                controlled weapon handling.</li>
+                                safe, controlled weapon handling.</li>
                             <li><strong>Red:</strong> Advanced preparation toward Black Belt; refine all fundamentals
-                                and add
-                                new material (e.g., Zang Do Moon).</li>
+                                and add new material (e.g., Zang Do Moon).</li>
                             <li><strong>Brown:</strong> Train Discovery (bo) and, at some schools, a musical form (e.g.,
                                 Beethoven); focused Black Belt prep.</li>
                             <li><strong>1st Degree Black:</strong> Mastery of basics with expanded curriculum—new
-                                weapons,
-                                deeper self-defense, performance options.</li>
+                                weapons, deeper self-defense, performance options.</li>
                             <li><strong>2nd Degree Black:</strong> Advanced proficiency and leadership; many assist with
                                 teaching.</li>
                             <li><strong>3rd Degree Black:</strong> High-level technical skill, coaching, and mentorship.
@@ -499,8 +486,7 @@
                             <li>During the school year, wear full uniform to form classes. For summer and all sparring
                                 classes:
                                 full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require
-                                the
-                                current year’s shirt).</li>
+                                the current year’s shirt).</li>
                             <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
                                 Blue/red-trim options may also be available.</li>
                         </ul>
@@ -508,17 +494,14 @@
 
                     <div class="info" id="tournaments">
                         <h3>Tournaments</h3>
-                        <p>
-                            NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
-                            Intramurals/Team events and Diamond Nationals.
-                        </p>
+                        <p>NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
+                            Intramurals/Team events and Diamond Nationals.</p>
                         <ul class="list">
                             <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
                             <li>You’ll receive your ring assignment and report time.</li>
                             <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
                                 Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically
-                                Black
-                                Belt, sometimes Brown for musical).</li>
+                                Black Belt, sometimes Brown for musical).</li>
                             <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
                                 Sparring (when eligible).</li>
                         </ul>
@@ -531,8 +514,7 @@
 
                     <div class="info" id="organization">
                         <h3>How this site is organized</h3>
-                        <p>
-                            Choose your school, then jump to a belt. Each belt page follows the same structure:
+                        <p>Choose your school, then jump to a belt. Each belt page follows the same structure:
                             <em>Class focus</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources
                                 (videos)</em>, and
                             <em>Testing requirements</em>. Maple Grove and Apple Valley are the first schools being
@@ -545,8 +527,7 @@
                                 <div class="meta">Mrs. Boone</div>
                                 <div class="actions">
                                     <a class="btn accent" href="#"
-                                        onclick="demoSchool('Albertville'); return false;">Visit
-                                        school page</a>
+                                        onclick="demoSchool('Albertville'); return false;">Visit school page</a>
                                 </div>
                             </article>
 
@@ -555,8 +536,7 @@
                                 <div class="meta">Ms. Lomasney and Mr. Sherve</div>
                                 <div class="actions">
                                     <a class="btn accent" href="#" onclick="demoSchool('Andover'); return false;">Visit
-                                        school
-                                        page</a>
+                                        school page</a>
                                 </div>
                             </article>
 
@@ -575,8 +555,7 @@
                                 <div class="meta">Mr. Hill</div>
                                 <div class="actions">
                                     <a class="btn accent" href="#"
-                                        onclick="demoSchool('Eden Prairie'); return false;">Visit
-                                        school page</a>
+                                        onclick="demoSchool('Eden Prairie'); return false;">Visit school page</a>
                                 </div>
                             </article>
 
@@ -595,8 +574,7 @@
                                 <div class="meta">Mr. Sutherland and Ms. Babler</div>
                                 <div class="actions">
                                     <a class="btn accent" href="#" onclick="demoSchool('Ramsey'); return false;">Visit
-                                        school
-                                        page</a>
+                                        school page</a>
                                 </div>
                             </article>
 
@@ -618,20 +596,17 @@
             </div>
         </div>
 
-        <!-- Mobile quick nav (auto-generated) -->
-        <nav class="mobile-toc" id="mobileToc" aria-label="Quick navigation">
-            <!-- links injected by JS -->
-        </nav>
+        <nav class="mobile-toc" id="mobileToc" aria-label="Quick navigation"></nav>
     </main>
 
     <script>
-        // ===== Footer year
+        // Footer year
         document.getElementById('year').textContent = new Date().getFullYear();
 
         function demoSchool(name) { alert(`${name} page would live at /schools/${slugify(name)}/index.html`); }
         function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
 
-        // ===== Scroll progress
+        // Progress bar
         const progressBar = document.getElementById('progressBar');
         const setProgress = () => {
             const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -643,7 +618,7 @@
         window.addEventListener('scroll', setProgress, { passive: true });
         window.addEventListener('resize', setProgress);
 
-        // ===== Build TOCs from in-page sections
+        // Build TOC
         const sections = [
             { id: 'welcome', label: 'Welcome' },
             { id: 'roadmap', label: 'High-level roadmap' },
@@ -651,7 +626,6 @@
             { id: 'tournaments', label: 'Tournaments' },
             { id: 'organization', label: 'How this site is organized' },
         ];
-
         const toc = document.getElementById('toc');
         const mobileToc = document.getElementById('mobileToc');
 
@@ -669,41 +643,49 @@
         buildToc(toc);
         buildToc(mobileToc, true);
 
-        // ===== Sticky offset (header + progress bar + gap)
+        // Measure header + progress and write --header-offset
         const headerEl = document.querySelector('header.site');
         const progressEl = document.querySelector('.progress-track');
 
-        function setStickyOffset() {
+        function setHeaderOffset() {
             const headerH = headerEl ? headerEl.offsetHeight : 0;
             const progH = progressEl ? progressEl.offsetHeight : 0;
-            const gap = 12; // breathing room for anchor targets
-            const total = headerH + progH + gap;
-            document.documentElement.style.setProperty('--sticky-offset', total + 'px');
+            const total = headerH + progH; // NO gap in the layout var
+            document.documentElement.style.setProperty('--header-offset', total + 'px');
             return total;
         }
-        let currentOffset = setStickyOffset();
-        window.addEventListener('resize', () => { currentOffset = setStickyOffset(); updateActiveByScroll(); });
-        window.addEventListener('orientationchange', () => { currentOffset = setStickyOffset(); updateActiveByScroll(); });
+        let headerOffset = setHeaderOffset();
+
+        function refreshHeaderOffset() {
+            headerOffset = setHeaderOffset();
+            updateActiveByScroll();
+        }
+        window.addEventListener('resize', refreshHeaderOffset);
+        window.addEventListener('orientationchange', refreshHeaderOffset);
         if ('ResizeObserver' in window && headerEl) {
-            new ResizeObserver(() => { currentOffset = setStickyOffset(); updateActiveByScroll(); }).observe(headerEl);
+            new ResizeObserver(refreshHeaderOffset).observe(headerEl);
         }
 
-        // ===== Smooth scroll that respects the fixed header offset
-        function smoothScrollToEl(el) {
+        // Smooth scroll using header offset + small anchor gap
+        function getVars() {
             const cs = getComputedStyle(document.documentElement);
-            const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
-            const top = el.getBoundingClientRect().top + window.scrollY - off;
+            const off = parseInt(cs.getPropertyValue('--header-offset')) || headerOffset || 0;
+            const gap = parseInt(cs.getPropertyValue('--anchor-gap')) || 0;
+            return { off, gap };
+        }
+        function smoothScrollToEl(el) {
+            const { off, gap } = getVars();
+            const top = el.getBoundingClientRect().top + window.scrollY - (off + gap);
             window.scrollTo({ top, behavior: 'smooth' });
         }
 
-        // ===== Link maps
+        // Link maps
         const links = [...toc.querySelectorAll('a')];
         const mobileLinks = [...mobileToc.querySelectorAll('a')];
         const linkMap = new Map(sections.map(s => [s.id, {
             desktop: links.find(a => a.getAttribute('href') === `#${s.id}`),
             mobile: mobileLinks.find(a => a.getAttribute('href') === `#${s.id}`)
         }]));
-
         function setActive(id) {
             const pair = linkMap.get(id);
             if (!pair) return;
@@ -721,7 +703,7 @@
                 const el = document.getElementById(id);
                 if (!el) return;
                 e.preventDefault();
-                setActive(id);              // immediate visual feedback
+                setActive(id);
                 smoothScrollToEl(el);
                 history.replaceState(null, '', `#${id}`);
             });
@@ -729,7 +711,7 @@
         enableSmooth(toc);
         enableSmooth(mobileToc);
 
-        // ===== Handle native hash loads/changes so targets aren't covered
+        // Handle native hash loads/changes
         function scrollToHashTarget() {
             const hash = decodeURIComponent(location.hash || '').replace('#', '');
             if (!hash) return;
@@ -740,17 +722,15 @@
         if (location.hash) scrollToHashTarget();
         window.addEventListener('hashchange', scrollToHashTarget);
 
-        // ===== ScrollSpy (deterministic; fixed-header aware)
+        // Deterministic ScrollSpy (header-aware)
         const sectionEls = sections.map(s => document.getElementById(s.id)).filter(Boolean);
         let ticking = false;
-
         function updateActiveByScroll() {
             if (ticking) return;
             ticking = true;
             requestAnimationFrame(() => {
-                const cs = getComputedStyle(document.documentElement);
-                const off = parseInt(cs.getPropertyValue('--sticky-offset')) || currentOffset || 0;
-                const refY = window.scrollY + off + 1; // line just below the fixed header
+                const { off } = getVars();
+                const refY = window.scrollY + off + 1; // line just under fixed header
                 let currentId = sectionEls[0]?.id;
                 for (const el of sectionEls) {
                     if (el.offsetTop <= refY) { currentId = el.id; } else { break; }
