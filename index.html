@@ -25,11 +25,11 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, .35);
             --maxw: 1100px;
 
-            /* NEW: layout vs scroll vars */
+            /* layout vs scroll */
             --header-offset: 96px;
-            /* fallback; JS sets exact header + progress */
+            /* JS sets exact header + progress */
             --anchor-gap: 12px;
-            /* small breathing room for anchor jumps */
+            /* small breathing room */
 
             /* scroll tracking */
             --progress-height: 4px;
@@ -40,7 +40,7 @@
             box-sizing: border-box
         }
 
-        /* Native #hash jumps stop below the fixed header */
+        /* Native #hash jumps stop below the fixed header (no gap here) */
         html {
             height: 100%;
             scroll-padding-top: var(--header-offset);
@@ -50,7 +50,7 @@
             height: 100%
         }
 
-        /* Sections also honor the header offset */
+        /* Sections honor the header offset for native jumps */
         #welcome,
         #roadmap,
         #notes,
@@ -94,7 +94,7 @@
             padding: 20px
         }
 
-        /* ====== Header: fixed (always visible) ====== */
+        /* Fixed header */
         header.site {
             position: fixed;
             top: 0;
@@ -155,7 +155,7 @@
             text-decoration: none
         }
 
-        /* Progress bar lives inside fixed header */
+        /* Progress bar inside header */
         .progress-track {
             height: var(--progress-height);
             background: rgba(255, 255, 255, .06);
@@ -170,9 +170,9 @@
             transition: width .08s linear;
         }
 
-        /* Push page content below fixed header (no subtraction) */
+        /* Push content down by header + gap so nothing is clipped on first paint */
         main {
-            padding-top: var(--header-offset);
+            padding-top: calc(var(--header-offset) + var(--anchor-gap));
         }
 
         .hero {
@@ -438,9 +438,9 @@
                         <h2>Welcome</h2>
                         <p>
                             I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
-                            Karate
-                            site) to help parents track what to practice, what classes cover, and how to stay ready for
-                            testing—organized by school and belt.
+                            Karate site) to help parents track what to practice, what classes cover, and how to stay
+                            ready
+                            for testing—organized by school and belt.
                         </p>
                     </div>
                 </section>
@@ -643,14 +643,14 @@
         buildToc(toc);
         buildToc(mobileToc, true);
 
-        // Measure header + progress and write --header-offset
+        // Measure header + progress and write --header-offset (no gap)
         const headerEl = document.querySelector('header.site');
         const progressEl = document.querySelector('.progress-track');
 
         function setHeaderOffset() {
             const headerH = headerEl ? headerEl.offsetHeight : 0;
             const progH = progressEl ? progressEl.offsetHeight : 0;
-            const total = headerH + progH; // NO gap in the layout var
+            const total = headerH + progH; // NO gap in layout var
             document.documentElement.style.setProperty('--header-offset', total + 'px');
             return total;
         }
@@ -743,6 +743,9 @@
         window.addEventListener('scroll', updateActiveByScroll, { passive: true });
         window.addEventListener('resize', updateActiveByScroll);
         window.addEventListener('orientationchange', updateActiveByScroll);
+
+        // Progress on load after header height finalizes
+        window.addEventListener('load', setProgress);
     </script>
 </body>
 
