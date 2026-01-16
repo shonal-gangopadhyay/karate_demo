@@ -51,11 +51,7 @@
                 radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
                 radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
                 linear-gradient(180deg, rgba(15, 23, 42, .92), rgba(15, 23, 42, .92)),
-                url('data:image/svg+xml;utf8,\
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\
-            <rect width="40" height="40" fill="%230f172a"/>\
-            <path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\
-          </svg>');
+                url('data:image/svg+xml;utf8,\<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\<rect width="40" height="40" fill="%230f172a"/>\<path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\</svg>');
             background-attachment: fixed;
             background-size: auto, auto, auto, 40px 40px;
             color: var(--text);
@@ -399,6 +395,22 @@
                 transition: none !important;
             }
         }
+
+        .info-image-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .info-image {
+            width: 100%;
+            max-width: 800px;
+            /* prevents it from getting too big */
+            height: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 
@@ -438,7 +450,7 @@
                     <div class="hero-inner">
                         <h2>Welcome</h2>
                         <p>
-                            I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
+                            I'm Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
                             Karate site) to help parents track what to practice, what classes cover, and how to stay
                             ready
                             for testing—organized by school and belt.
@@ -447,6 +459,20 @@
                 </section>
 
                 <section class="info-grid">
+
+                    <div class="info" id="teamtournament">
+                        <h3>NK Sport Karate Challenge</h3>
+                        <div class="info-image-wrapper">
+                            <img src="assets\img\teamtournament2026.jpg" alt="NK Sport Karate Challenge"
+                                class="info-image">
+                        </div>
+                        <ul class="list">
+                            <li><a href="https://www.mataction.com/SportKarateChallenge" target="_blank"
+                                    rel="noopener noreferrer">Registration</a> - ask your school Director for assistance
+                                if needed</li>
+                        </ul>
+                    </div>
+
                     <div class="info" id="roadmap">
                         <h3>Curriculum Summary</h3>
                         <ul class="list">
@@ -487,7 +513,7 @@
                             <li>During the school year, wear full uniform to form classes. For summer and all sparring
                                 classes:
                                 full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require
-                                the current year’s shirt).</li>
+                                the current year's shirt).</li>
                             <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
                                 Blue/red-trim options may also be available.</li>
                         </ul>
@@ -538,7 +564,7 @@
                         </p>
                         <ul class="list">
                             <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
-                            <li>You’ll receive your ring assignment and report time.</li>
+                            <li>You'll receive your ring assignment and report time.</li>
                             <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
                                 Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically
                                 Black Belt, sometimes Brown for musical).</li>
@@ -724,6 +750,7 @@
         // Build TOC
         const sections = [
             { id: 'welcome', label: 'Welcome' },
+            { id: 'teamtournament', label: 'NK Sport Karate Challenge' },
             { id: 'roadmap', label: 'Curriculum Summary' },
             { id: 'notes', label: 'Quick notes' },
             { id: 'bb-exam', label: 'Upcoming Black Belt Exam' },
