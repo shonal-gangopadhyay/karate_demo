@@ -299,6 +299,74 @@
             border-radius: 0.75rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
+
+        /* =========================
+           TOC (Desktop + Mobile)
+           ========================= */
+
+        /* Desktop layout: TOC left, content right */
+        @media (min-width: 1100px) {
+            .page-grid {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                gap: 18px;
+                margin-top: 18px;
+            }
+
+            .toc {
+                position: sticky;
+                top: 84px;
+                /* sticky header offset */
+                align-self: start;
+                background: rgba(31, 41, 55, .6);
+                border: 1px solid rgba(255, 255, 255, .08);
+                border-radius: 14px;
+                padding: 10px;
+                max-height: calc(100vh - 120px);
+                overflow: auto;
+            }
+
+            .toc h4 {
+                margin: 6px 8px 8px;
+                font-size: .9rem;
+                color: var(--muted);
+                font-weight: 600;
+                letter-spacing: .3px;
+            }
+
+            .toc a {
+                display: block;
+                padding: 8px 10px;
+                border-radius: 10px;
+                color: var(--text);
+                text-decoration: none;
+                border: 1px solid transparent;
+            }
+
+            .toc a:hover {
+                background: rgba(255, 255, 255, .06);
+            }
+
+            .toc a.active {
+                background: linear-gradient(180deg, rgba(34, 211, 238, .16), rgba(34, 211, 238, .08));
+                border-color: rgba(34, 211, 238, .25);
+                color: var(--text-strong);
+            }
+        }
+
+        /* Hide desktop TOC on mobile */
+        @media (max-width: 1099px) {
+            .toc {
+                display: none !important;
+            }
+        }
+
+        /* Hide mobile belt on desktop */
+        @media (min-width: 1100px) {
+            .mobile-toc {
+                display: none;
+            }
+        }
     </style>
 
 </head>
@@ -327,160 +395,308 @@
             </div>
         </section>
 
-        <!-- One-column, short cards -->
-        <section class="cards">
-            <!-- Welcome-->
-            <article>
-                <p>This year's Sport Karate Challenge (aka team tournament) is coming up! Get out there and represent
-                    your NK school!</p>
-            </article>
-            <!-- Title Image -->
-            <article>
-                <div class="info-image-wrapper">
-                    <img src="..\assets\img\tournaments\team2026\title.jpg" alt="NK Sport Karate Challenge"
-                        class="info-image">
-                </div>
-            </article>
+        <!-- Desktop TOC + content -->
+        <div class="page-grid">
+            <aside class="toc" id="toc" aria-labelledby="toc-title">
+                <h4 id="toc-title">On this page</h4>
+                <!-- links injected by JS -->
+            </aside>
 
-            <!-- Registration -->
-            <article class="card">
-                <p>
-                <h3>Registration</h3>
-                </p>
-            </article>
-            <article>
-                <p><a href="https://www.mataction.com/SportKarateChallenge" target="_blank"
-                        rel="noopener noreferrer">Registration</a> - ask your school Director for assistance
-                    if needed</p>
-            </article>
+            <div>
+                <!-- One-column, short cards -->
+                <section class="cards">
+                    <!-- Welcome-->
+                    <article>
+                        <p>This year's Sport Karate Challenge (aka team tournament) is coming up! Get out there and
+                            represent
+                            your NK school!</p>
+                    </article>
 
-            <!-- TShirts-->
-            <article class="card">
-                <p>
-                <h3>Team t-shirts</h3>
-                </p>
-            </article>
-            <article>
-                <p>Each year, there is a new tshirt that is released with each team tournament. Each school has their
-                    own color for that year's design. When I was director at Edina, I always tried to get purple+black
-                    for my students. <strong>Important:</strong> some schools only allow that year's team tournament
-                    tshirt as an acceptable tshirt to wear in summer and sparring classes.</p>
-            </article>
+                    <!-- Title Image -->
+                    <article>
+                        <div class="info-image-wrapper">
+                            <img src="..\assets\img\tournaments\team2026\title.jpg" alt="NK Sport Karate Challenge"
+                                class="info-image">
+                        </div>
+                    </article>
 
-            <!-- Layout and Ring Assignments -->
-            <article class="card">
-                <p>
-                <h3>Layout and Ring Assignments</h3>
-                </p>
-            </article>
-            <article>
-                <div class="info-image-wrapper">
-                    <img src="..\assets\img\tournaments\team2026\layout.jpg" alt="layout" class="info-image">
-                </div>
-            </article>
-            <article>
-                <div class="info-image-wrapper">
-                    <img src="..\assets\img\tournaments\team2026\ringassignments.jpg" alt="ring assignments"
-                        class="info-image">
-                </div>
-            </article>
+                    <!-- Registration -->
+                    <article class="card">
+                        <h3>Registration</h3>
+                    </article>
+                    <article>
+                        <p><a href="https://www.mataction.com/SportKarateChallenge" target="_blank"
+                                rel="noopener noreferrer">Registration</a> - ask your school Director for assistance
+                            if needed</p>
+                    </article>
 
-            <!-- Basics -->
-            <article class="card">
-                <p>
-                <h3>The Basics Divisions</h3>
-                </p>
-            </article>
-            <article>
-                <p>Students who are in the little masters program (4-6 year olds) do not usually have a form that they
-                    can compete with. Instead, they may compete with the regular moves that they practice in class!
-                    Students whose rank range from white to red with brown stripe may also compete in the basics
-                    division.</p>
-            </article>
+                    <!-- TShirts-->
+                    <article class="card">
+                        <h3>Team t-shirts</h3>
+                    </article>
+                    <article>
+                        <p>Each year, there is a new tshirt that is released with each team tournament. Each school has
+                            their
+                            own color for that year's design. When I was director at Edina, I always tried to get
+                            purple+black
+                            for my students.</p>
+                    </article>
+                    <article>
+                        <p><strong>Important:</strong> some schools only allow that year's team tournament
+                            tshirt as an acceptable tshirt to wear in summer and sparring classes.</p>
+                    </article>
+                    <article>
+                        <p>Talk to your school owner/director to (pre-)order a shirt! (I'm going to try to get three
+                            colors this
+                            year: Apple Valley, Eden Prairie, and Maple Grove.)</p>
+                    </article>
 
-            <article>
-                <ul class="list"> Judges consider:
-                    <li>Clean, deep stances and correct technique</li>
-                    <li>Consistent speed</li>
-                    <li>Power</li>
-                    <li>Loud, controlled yells</li>
-                    <li>Focused eyes and strong intent</li>
-                </ul>
-            </article>
+                    <!-- Layout and Ring Assignments -->
+                    <article class="card">
+                        <h3>Layout and Ring Assignments</h3>
+                    </article>
+                    <article>
+                        <div class="info-image-wrapper">
+                            <img src="..\assets\img\tournaments\team2026\layout.jpg" alt="layout" class="info-image">
+                        </div>
+                    </article>
+                    <article>
+                        <div class="info-image-wrapper">
+                            <img src="..\assets\img\tournaments\team2026\ringassignments.jpg" alt="ring assignments"
+                                class="info-image">
+                        </div>
+                    </article>
 
-            <article>
-                <p>I included a copy of the basics below for your convenience and practice.</p>
-            </article>
+                    <!-- Basics -->
+                    <article class="card">
+                        <h3>The Basics Divisions</h3>
+                    </article>
+                    <article>
+                        <p>Students who are in the little masters program (4-6 year olds) do not usually have a form
+                            that they
+                            can compete with. Instead, they may compete with the regular moves that they practice in
+                            class!
+                            Students whose rank range from white to red with brown stripe may also compete in the basics
+                            division.</p>
+                    </article>
 
-            <article>
-                <div class="info-image-wrapper">
-                    <img src="..\assets\img\tournaments\team2026\basics.jpg" alt="Little Masters basics"
-                        class="info-image">
-                </div>
-            </article>
+                    <article>
+                        <ul class="list"> Judges consider:
+                            <li>Clean, deep stances and correct technique</li>
+                            <li>Consistent speed</li>
+                            <li>Power</li>
+                            <li>Loud, controlled yells</li>
+                            <li>Focused eyes and strong intent</li>
+                        </ul>
+                    </article>
 
+                    <article>
+                        <p>I included a copy of the basics below for your convenience and practice.</p>
+                    </article>
 
-            <!-- Traditional Weapons and Form -->
-            <article class="card">
-                <p>
-                <h3>The Forms Divisions</h3>
-                </p>
-            </article>
-            <article>
-                <p>Students may compete in both traditional weapons as well as traditional forms. Some students do not
-                    have a weapons form yet, while some students have multiple forms of both types. I recommend sticking
-                    to your best empty hand form and your best weapons form. For example, a newly promoted first degree
-                    black belt might still do Zang Do Moon if they haven't completed learning Him Hyung. Another example
-                    could be where a blue belt competes with both Shee Hyung Bo as well as Shin Jin Hyung.</p>
-            </article>
-            <article>
-                <p>I will be competing in both traditional empty hand and traditional weapons. I will be doing Kwang Gae
-                    for empty hand. I made a bo form which I will be competing with.</p>
-            </article>
-            <article>
+                    <article>
+                        <div class="info-image-wrapper">
+                            <img src="..\assets\img\tournaments\team2026\basics.jpg" alt="Little Masters basics"
+                                class="info-image">
+                        </div>
+                    </article>
 
-                <ul class="list"> Judges consider:
-                    <li>Clean, deep stances and correct technique</li>
-                    <li>Consistent speed</li>
-                    <li>Power</li>
-                    <li>Loud, controlled yells</li>
-                    <li>Focused eyes and strong intent</li>
-                </ul>
-            </article>
+                    <!-- Traditional Weapons and Form -->
+                    <article class="card">
+                        <h3>The Forms Divisions</h3>
+                    </article>
+                    <article>
+                        <p>Students may compete in both traditional weapons as well as traditional forms. Some students
+                            do not
+                            have a weapons form yet, while some students have multiple forms of both types. I recommend
+                            sticking
+                            to your best empty hand form and your best weapons form. For example, a newly promoted first
+                            degree
+                            black belt might still do Zang Do Moon if they haven't completed learning Him Hyung. Another
+                            example
+                            could be where a blue belt competes with both Shee Hyung Bo as well as Shin Jin Hyung.</p>
+                    </article>
+                    <article>
+                        <p>I will be competing in both traditional empty hand and traditional weapons. I will be doing
+                            Kwang Gae
+                            for empty hand. I made a bo form which I will be competing with.</p>
+                    </article>
+                    <article>
+                        <ul class="list"> Judges consider:
+                            <li>Clean, deep stances and correct technique</li>
+                            <li>Consistent speed</li>
+                            <li>Power</li>
+                            <li>Loud, controlled yells</li>
+                            <li>Focused eyes and strong intent</li>
+                        </ul>
+                    </article>
 
+                    <!-- Sparring -->
+                    <article class="card">
+                        <h3>The Sparring Division</h3>
+                    </article>
+                    <article>
+                        <p>Students may compete in sparring where they will spar other students their age, gender, and
+                            rank. See
+                            FAQ section below for details.</p>
+                    </article>
 
-            <!-- Sparring -->
-            <article class="card">
-                <p>
-                <h3>The Sparring Division</h3>
-                </p>
-            </article>
-            <article>
-                <p>Students may compete in sparring where they will spar other students their age, gender, and rank. See
-                    FAQ section below for details.</p>
-            </article>
+                    <!-- FAQ -->
+                    <article class="card">
+                        <h3>FAQ</h3>
+                    </article>
+                    <article>
+                        <div class="info-image-wrapper">
+                            <img src="..\assets\img\tournaments\team2026\faq.jpg" alt="FAQ" class="info-image">
+                        </div>
+                    </article>
 
-            <!-- FAQ -->
-            <article class="card">
-                <p>
-                <h3>FAQ</h3>
-                </p>
-            </article>
-            <article>
-                <div class="info-image-wrapper">
-                    <img src="..\assets\img\tournaments\team2026\faq.jpg" alt="FAQ" class="info-image">
-                </div>
-            </article>
+                </section>
 
-        </section>
+                <footer class="muted" style="margin:40px 0 18px;">
+                    <span id="year"></span> NK Sport Karate Challenge • Karate Parent Portal
+                </footer>
+            </div>
+        </div>
 
-        <footer class="muted" style="margin:40px 0 18px;">
-            <span id="year"></span> NK Sport Karate Challenge • Karate Parent Portal
-        </footer>
+        <!-- Mobile TOC belt -->
+        <nav class="mobile-toc" id="mobileToc" aria-label="Quick navigation"></nav>
     </main>
 
     <script>
+        // Footer year
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ---- Helpers ----
+        function slugify(str) {
+            return (str || '')
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, ' and ')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+        }
+
+        // ---- Build sections list from article.card ----
+        const cards = Array.from(document.querySelectorAll('article.card'));
+
+        const sections = cards.map((card, idx) => {
+            const heading = card.querySelector('h2, h3, h4');
+            const label = heading ? heading.textContent.trim() : `Section ${idx + 1}`;
+
+            // Ensure card has an id (so we can link to it)
+            if (!card.id) {
+                const base = slugify(label) || `section-${idx + 1}`;
+                let id = base;
+                let n = 2;
+                while (document.getElementById(id)) {
+                    id = `${base}-${n++}`;
+                }
+                card.id = id;
+            }
+
+            // Make jumping feel nice with a sticky header
+            card.style.scrollMarginTop = '84px';
+
+            return { id: card.id, label };
+        });
+
+        // ---- Inject TOC links ----
+        const toc = document.getElementById('toc');
+        const mobileToc = document.getElementById('mobileToc');
+
+        function buildToc(container) {
+            if (!container) return;
+
+            // Keep existing heading if this is the desktop toc
+            const existingHeading = container.querySelector('h4');
+            container.innerHTML = '';
+            if (existingHeading) container.appendChild(existingHeading);
+
+            const frag = document.createDocumentFragment();
+            sections.forEach(({ id, label }) => {
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = label;
+                frag.appendChild(a);
+            });
+
+            container.appendChild(frag);
+        }
+
+        buildToc(toc);
+        buildToc(mobileToc);
+
+        const tocLinks = toc ? Array.from(toc.querySelectorAll('a[href^="#"]')) : [];
+        const mobileLinks = mobileToc ? Array.from(mobileToc.querySelectorAll('a[href^="#"]')) : [];
+
+        // ---- Smooth scroll (no weird jump) ----
+        function smoothScrollToId(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const headerOffset = 84;
+            const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        function setActive(id) {
+            [...tocLinks, ...mobileLinks].forEach(a => a.classList.remove('active'));
+            tocLinks.find(a => a.getAttribute('href') === `#${id}`)?.classList.add('active');
+            mobileLinks.find(a => a.getAttribute('href') === `#${id}`)?.classList.add('active');
+        }
+
+        function enableSmooth(container) {
+            if (!container) return;
+            container.addEventListener('click', (e) => {
+                const a = e.target.closest('a[href^="#"]');
+                if (!a) return;
+                const id = a.getAttribute('href').slice(1);
+                e.preventDefault();
+                setActive(id);
+                smoothScrollToId(id);
+                history.replaceState(null, '', `#${id}`);
+            });
+        }
+
+        enableSmooth(toc);
+        enableSmooth(mobileToc);
+
+        // ---- Scrollspy: highlight current section ----
+        const sectionEls = sections.map(s => document.getElementById(s.id)).filter(Boolean);
+
+        let ticking = false;
+        function updateActiveByScroll() {
+            if (ticking) return;
+            ticking = true;
+
+            requestAnimationFrame(() => {
+                const headerOffset = 84;
+                const refY = window.scrollY + headerOffset + 1;
+
+                let currentId = sectionEls[0]?.id;
+                for (const el of sectionEls) {
+                    if (el.offsetTop <= refY) currentId = el.id;
+                    else break;
+                }
+
+                if (currentId) setActive(currentId);
+                ticking = false;
+            });
+        }
+
+        updateActiveByScroll();
+        window.addEventListener('scroll', updateActiveByScroll, { passive: true });
+        window.addEventListener('resize', updateActiveByScroll);
+
+        // If user loads page with a hash, smooth-scroll to it
+        if (location.hash) {
+            const id = decodeURIComponent(location.hash).slice(1);
+            setTimeout(() => {
+                setActive(id);
+                smoothScrollToId(id);
+            }, 0);
+        }
     </script>
 </body>
 
