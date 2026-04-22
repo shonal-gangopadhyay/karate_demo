@@ -645,31 +645,31 @@
         window.addEventListener('resize', setProgress);
 
         // Build TOC
-        const sections = [
-            { id: 'welcome', label: 'Welcome' },
-            { id: 'teamtournament', label: 'NK Sport Karate Challenge' },
-            { id: 'roadmap', label: 'Curriculum Summary' },
-            { id: 'notes', label: 'Quick notes' },
-            { id: 'bb-exam', label: 'Upcoming Black Belt Exam' },
-            { id: 'tournaments', label: 'Tournaments' },
-            { id: 'organization', label: 'Curriculum by Belt' },
-        ];
-        const toc = document.getElementById('toc');
-        const mobileToc = document.getElementById('mobileToc');
+        // const sections = [
+        //     { id: 'welcome', label: 'Welcome' },
+        //     { id: 'teamtournament', label: 'NK Sport Karate Challenge' },
+        //     { id: 'roadmap', label: 'Curriculum Summary' },
+        //     { id: 'notes', label: 'Quick notes' },
+        //     { id: 'bb-exam', label: 'Upcoming Black Belt Exam' },
+        //     { id: 'tournaments', label: 'Tournaments' },
+        //     { id: 'organization', label: 'Curriculum by Belt' },
+        // ];
+        // const toc = document.getElementById('toc');
+        // const mobileToc = document.getElementById('mobileToc');
 
-        function buildToc(container, isMobile = false) {
-            const frag = document.createDocumentFragment();
-            sections.forEach(({ id, label }) => {
-                const a = document.createElement('a');
-                a.href = `#${id}`;
-                a.textContent = label;
-                if (isMobile) a.setAttribute('role', 'button');
-                frag.appendChild(a);
-            });
-            container.appendChild(frag);
-        }
-        buildToc(toc);
-        buildToc(mobileToc, true);
+        // function buildToc(container, isMobile = false) {
+        //     const frag = document.createDocumentFragment();
+        //     sections.forEach(({ id, label }) => {
+        //         const a = document.createElement('a');
+        //         a.href = `#${id}`;
+        //         a.textContent = label;
+        //         if (isMobile) a.setAttribute('role', 'button');
+        //         frag.appendChild(a);
+        //     });
+        //     container.appendChild(frag);
+        // }
+        // buildToc(toc);
+        // buildToc(mobileToc, true);
 
         // Measure header + progress and set --header-offset
         const headerEl = document.querySelector('header.site');
