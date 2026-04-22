@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Karate Parent Portal</title>
+    <meta name="description"
+        content="A clear, mobile-first portal for karate parents with school-specific pages, belt expectations, schedules, milestones, and resources." />
+    <link rel="icon" type="image/png" sizes="128x128" href="assets\favicons\favicon-128.png">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #111827;
+            --panel: #1f2937;
+            --muted: #9ca3af;
+            --text: #e5e7eb;
+            --text-strong: #f9fafb;
+            --accent: #ef4444;
+            --accent-2: #22d3ee;
+            --ok: #22c55e;
+            --warn: #f59e0b;
+            --radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            --maxw: 1100px;
+
+            /* header height (topbar + progress) is measured in JS */
+            --header-offset: 96px;
+            /* fallback */
+            --anchor-gap: 0px;
+            /* optional extra space on jumps */
+
+            --progress-height: 4px;
+            --progress: 0%;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            height: 100%;
+            scroll-padding-top: var(--header-offset);
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background:
+                radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
+                radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
+                linear-gradient(180deg, rgba(15, 23, 42, .92), rgba(15, 23, 42, .92)),
+                url('data:image/svg+xml;utf8,\<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\<rect width="40" height="40" fill="%230f172a"/>\<path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\</svg>');
+            background-attachment: fixed;
+            background-size: auto, auto, auto, 40px 40px;
+            color: var(--text);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: var(--accent-2);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        /* ===== Fixed header ===== */
+        header.site {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, .85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 20px;
+            max-width: var(--maxw);
+            margin: 0 auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: conic-gradient(from 210deg, var(--accent), var(--accent-2));
+            box-shadow: 0 4px 18px rgba(34, 211, 238, .25);
+            flex: 0 0 auto;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            letter-spacing: .25px;
+            color: var(--text-strong)
+        }
+
+        .brand small {
+            display: block;
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 2px
+        }
+
+        nav a {
+            padding: 8px 12px;
+            border-radius: 10px
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, .06);
+            text-decoration: none
+        }
+
+        /* ===== Progress bar in header ===== */
+        .progress-track {
+            height: var(--progress-height);
+            background: rgba(255, 255, 255, .06);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: var(--progress);
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            box-shadow: 0 0 12px rgba(34, 211, 238, .35);
+            transition: width .08s linear;
+        }
+
+        /* ===== Spacer that equals the header height ===== */
+        .header-spacer {
+            height: var(--header-offset);
+        }
+
+        /* Sections respect header height for native #hash */
+        #welcome,
+        #roadmap,
+        #notes,
+        #tournaments,
+        #organization {
+            scroll-margin-top: var(--header-offset);
+        }
+
+        .hero {
+            margin-top: 18px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), transparent);
+            border: 1px solid rgba(255, 255, 255, .06);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            padding: 22px 20px
+        }
+
+        .hero h2 {
+            margin: 0 0 8px;
+            font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+            color: var(--text-strong)
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted)
+        }
+
+        .cards,
+        .info-grid,
+        .belt-cards,
+        .tiles,
+        .sections,
+        .quick-links,
+        .schools {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .card {
+            grid-column: 1/-1;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+            transition: transform .15s ease, box-shadow .2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .5)
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            color: var(--text-strong)
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        .card .actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            color: var(--text-strong);
+            font-weight: 600;
+            letter-spacing: .25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            text-decoration: none
+        }
+
+        .btn.accent {
+            background: linear-gradient(180deg, rgba(239, 68, 68, .25), rgba(239, 68, 68, .14));
+            border-color: rgba(239, 68, 68, .35)
+        }
+
+        @media (min-width:1100px) {
+            .page-grid {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                gap: 18px;
+            }
+
+            .toc {
+                position: sticky;
+                top: var(--header-offset);
+                margin-top: 18px;
+                align-self: start;
+                background: rgba(31, 41, 55, .6);
+                border: 1px solid rgba(255, 255, 255, .08);
+                border-radius: 14px;
+                padding: 10px;
+                max-height: calc(100vh - 120px);
+                overflow: auto;
+            }
+
+            .toc h4 {
+                margin: 6px 8px 8px;
+                font-size: .9rem;
+                color: var(--muted);
+                font-weight: 600;
+                letter-spacing: .3px;
+            }
+
+            .toc a {
+                display: block;
+                padding: 8px 10px;
+                border-radius: 10px;
+                color: var(--text);
+                text-decoration: none;
+                border: 1px solid transparent;
+            }
+
+            .toc a:hover {
+                background: rgba(255, 255, 255, .06)
+            }
+
+            .toc a.active {
+                background: linear-gradient(180deg, rgba(34, 211, 238, .16), rgba(34, 211, 238, .08));
+                border-color: rgba(34, 211, 238, .25);
+                color: var(--text-strong);
+            }
+        }
+
+        @media (max-width:1099px) {
+            .toc {
+                display: none !important;
+            }
+        }
+
+        /* Mobile quick nav */
+        .mobile-toc {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 10px;
+            z-index: 80;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 8px 10px;
+            margin: 0 10px;
+            border-radius: 999px;
+            background: rgba(31, 41, 55, .9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .mobile-toc a {
+            font-size: .92rem;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-decoration: none;
+        }
+
+        @media (min-width:1100px) {
+            .mobile-toc {
+                display: none;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ===========================
+           Mobile fade-up animations
+           =========================== */
+        @media (max-width: 1099px) {
+            :root {
+                --reveal-distance: 10px;
+                --reveal-duration: .45s;
+                --reveal-ease: cubic-bezier(.22, .61, .36, 1);
+            }
+
+            /* Start hidden with slight Y offset */
+            .reveal {
+                opacity: 0;
+                transform: translate3d(0, var(--reveal-distance), 0);
+                transition:
+                    opacity var(--reveal-duration) var(--reveal-ease),
+                    transform var(--reveal-duration) var(--reveal-ease);
+                will-change: opacity, transform;
+            }
+
+            /* Visible state */
+            .reveal.is-visible {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        .info-image-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .info-image {
+            width: 100%;
+            max-width: 800px;
+            /* prevents it from getting too big */
+            height: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <a class="sr-only" href="#content">Skip to content</a>
+
+    <header class="site">
+        <div class="topbar">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
+                <div>
+                    <h1>Karate Parent Portal</h1>
+                    <small>Clear guidance for every belt, school by school</small>
+                </div>
+            </div>
+            <nav>
+                <a href="https://www.nationalkarate.com/" target="_blank" rel="noopener noreferrer">National Karate
+                    Official Page</a>
+            </nav>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </header>
+
+    <!-- Spacer equals the fixed header height -->
+    <div class="header-spacer" aria-hidden="true"></div>
+
+    <main id="content" class="wrap">
+        <div class="page-grid">
+            <aside class="toc" id="toc" aria-labelledby="toc-title">
+                <h4 id="toc-title">On this page</h4>
+            </aside>
+
+            <div>
+                <section class="hero" id="welcome">
+                    <div class="hero-inner">
+                        <h2>Welcome</h2>
+                        <p>
+                            Hello! This is Ms. Lemon. This is an independent resource (not an official National
+                            Karate site) to help parents track what to practice, what classes cover, and how to stay
+                            ready
+                            for testing—organized by school and belt.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="info-grid">
+
+                    <!-- <div class="info" id="teamtournament">
+                        <h3>NK Sport Karate Challenge</h3>
+                        <div class="info-image-wrapper">
+                            <img src="assets\img\tournaments\team2026\title.jpg" alt="NK Sport Karate Challenge"
+                                class="info-image">
+                        </div>
+                        <ul class="list">
+                            <li><a href="https://www.mataction.com/SportKarateChallenge" target="_blank"
+                                    rel="noopener noreferrer">Registration</a>: ask your school Director for assistance
+                                if needed</li>
+                            <li><a href="https://shonal-gangopadhyay.github.io/karate_demo/tournaments/NKSportKarateChallenge2026.html"
+                                    rel="noopener noreferrer">More Information</a></li>
+                            <li><strong>Black Belts</strong> (and parent volunteers): Please talk to your instructors
+                                about judging and time/score keeping!</li>
+                        </ul>
+                    </div> -->
+
+                    <div class="info" id="roadmap">
+                        <h3>Curriculum Summary</h3>
+                        <ul class="list">
+                            <li><strong>New students:</strong> Intro program covering fundamentals—stances, strikes,
+                                kicks,
+                                forms, and self-defense—plus life skills (respect, focus, discipline).</li>
+                            <li><strong>White & Gold:</strong> Foundation work and class habits; emphasis on basics and
+                                etiquette.</li>
+                            <li><strong>Green:</strong> Add sparring (marked with * on schedules). Purchase sparring
+                                gear through your school. Aim for 1 form + 1 sparring class/week (2+2 ideal).</li>
+                            <li><strong>Purple:</strong> Continue form and sparring; skills typically accelerate with
+                                consistency.</li>
+                            <li><strong>Blue:</strong> Begin bo staff in form class (school-purchased equipment). Learn
+                                safe, controlled weapon handling.</li>
+                            <li><strong>Red:</strong> Advanced preparation toward Black Belt; refine all fundamentals
+                                and add new material (e.g., Zang Do Moon).</li>
+                            <li><strong>Brown:</strong> Train Discovery (bo) and, at some schools, a musical form (e.g.,
+                                Beethoven); focused Black Belt prep.</li>
+                            <li><strong>1st Degree Black:</strong> Mastery of basics with expanded curriculum—new
+                                weapons, deeper self-defense, performance options.</li>
+                            <li><strong>2nd Degree Black:</strong> Advanced proficiency and leadership; many assist with
+                                teaching.</li>
+                            <li><strong>3rd Degree Black:</strong> High-level technical skill, coaching, and mentorship.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="notes">
+                        <h3>Quick notes</h3>
+                        <p>If you have questions, ask your school director or instructor.</p>
+                        <ul class="list">
+                            <li>Sparring gear is purchased through your NK school.</li>
+                            <li>Bo (Blue Belt), kamas and bokken (Black Belt) are purchased through your school.</li>
+                            <li><strong>Recommendation:</strong> Bring <em>all</em> required gear to every class.</li>
+                            <li>Clean sparring gear regularly.</li>
+                            <li>Treat the bo as a weapon—use care and respect.</li>
+                            <li>No sibling-vs-sibling sparring unless approved by instructor.</li>
+                            <li>During the school year, wear full uniform to form classes. For summer and all sparring
+                                classes:
+                                full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require
+                                the current year's shirt).</li>
+                            <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
+                                Blue/red-trim options may also be available.</li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="bb-exam">
+                        <h3>Upcoming Black Belt Screening and Exam Dates</h3>
+                        <p>Brown Belts with two black stripes and higher test for Black Belt at a set of screenings and
+                            a graduation ceremony/exam. Each set of schools have different dates and locations for the
+                            screenings, but all schools send their candidates to the same final exam.</p>
+                        <p>Brown Belts with two black stripes go to three screenings (1-3) as well as the final
+                            exam/graduation. First Degree Black Belts and higher go to screenings 1, 2, and 3 as well as
+                            the
+                            "all-school" screening.</p>
+                        <p>If you have questions, ask Ms. Lemon.</p>
+
+                        <p>August 2026 Black Belt Exam</p>
+                        <ul class="list">
+                            <li>Bloomington, Eden Prairie, Hopkins, Maple Grove, and South Minneapolis</li>
+                            <ul class="list">
+                                <li>Screening 1: TBD</li>
+                                <li>Screening 2: TBD</li>
+                                <li>Screening 3: TBD</li>
+                            </ul>
+                            <li>Advanced All-School Screening: TBD at 1:00 pm @ Eden Prairie NK</li>
+                            <li>August Black Belt Exam: Saturday, TBD @ Eisenhower Community Center in Hopkins</li>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="tournaments">
+                        <h3>Tournaments</h3>
+                        <p>NK hosts two tournaments each year: the NK Intramurals/Team events and Diamond Nationals.
+                            There are also a handful of other tournaments that are in a circuit called NCKA (this is
+                            like the NBA or NFL but for sport karate in MN.) There's also a national circuit called
+                            NASKA. Below, I'll post the dates for upcoming NCKA and NASKA events.
+                        </p>
+                        <ul class="list">
+                            <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
+                            <li>You'll receive your ring assignment and report time.</li>
+                            <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
+                                Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically
+                                Black Belt, sometimes Brown for musical).</li>
+                            <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
+                                Sparring (when eligible).</li>
+                        </ul>
+                        <p><strong>2026 dates</strong></p>
+                        <ul class="list">
+                            <li>MN State Karate Championships — Sunday, March 15th</li>
+                            <ul class="list">
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li><a href="https://www.mataction.com/MN-STATE" target="_blank"
+                                        rel="noopener noreferrer">Registration</a> - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+                            <br>
+                            <li>Central States Karate Championships — Sunday, May 3rd</li>
+                            <ul class="list">
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li><a href="https://www.mataction.com/Central-States" target="_blank"
+                                        rel="noopener noreferrer">Registration</a> - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+                            <br>
+                            <li>Twin Cities Rumble — Saturday, August 29th</li>
+                            <ul class="list">
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li>Registration (not open yet) - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+                            <li>Diamond Nationals — Friday, October 9th - Saturday, October 10th</li>
+                            <ul class="list">
+                                <li>This is an NCKA (local) and NASKA (international) tournament.</li>
+                                <li>Registration (not open yet) - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+
+                            <br>
+                        </ul>
+                    </div>
+
+                    <div class="info" id="organization">
+                        <h3>Curriculum by Belt</h3>
+
+                        <div class="cards">
+
+                            <article class="card">
+                                <div class="actions">
+                                    <a class="btn accent"
+                                        href="https://shonal-gangopadhyay.github.io/karate_demo/schools/southminneapolis/index.html">All
+                                        belts</a>
+                                </div>
+                            </article>
+
+                        </div>
+                    </div>
+                </section>
+
+                <footer>
+                    <p><span id="year"></span> Karate Parent Portal • Built for clarity and momentum</p>
+                </footer>
+            </div>
+        </div>
+
+        <nav class="mobile-toc" id="mobileToc" aria-label="Quick navigation"></nav>
+    </main>
+
+    <script>
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function demoSchool(name) { alert(`${name} page would live at /schools/${slugify(name)}/index.html`); }
+        function slugify(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+        // Progress bar
+        const progressBar = document.getElementById('progressBar');
+        const setProgress = () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = Math.max(0, Math.min(1, docHeight ? (scrollTop / docHeight) : 0));
+            progressBar.style.width = (pct * 100).toFixed(2) + '%';
+        };
+        setProgress();
+        window.addEventListener('scroll', setProgress, { passive: true });
+        window.addEventListener('resize', setProgress);
+
+        // Build TOC
+        const sections = [
+            { id: 'welcome', label: 'Welcome' },
+            { id: 'teamtournament', label: 'NK Sport Karate Challenge' },
+            { id: 'roadmap', label: 'Curriculum Summary' },
+            { id: 'notes', label: 'Quick notes' },
+            { id: 'bb-exam', label: 'Upcoming Black Belt Exam' },
+            { id: 'tournaments', label: 'Tournaments' },
+            { id: 'organization', label: 'Locations' },
+        ];
+        const toc = document.getElementById('toc');
+        const mobileToc = document.getElementById('mobileToc');
+
+        function buildToc(container, isMobile = false) {
+            const frag = document.createDocumentFragment();
+            sections.forEach(({ id, label }) => {
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = label;
+                if (isMobile) a.setAttribute('role', 'button');
+                frag.appendChild(a);
+            });
+            container.appendChild(frag);
+        }
+        buildToc(toc);
+        buildToc(mobileToc, true);
+
+        // Measure header + progress and set --header-offset
+        const headerEl = document.querySelector('header.site');
+        const progressEl = document.querySelector('.progress-track');
+        function setHeaderOffset() {
+            const headerH = headerEl ? headerEl.offsetHeight : 0;
+            const progH = progressEl ? progressEl.offsetHeight : 0;
+            const total = headerH + progH;
+            document.documentElement.style.setProperty('--header-offset', total + 'px');
+            return total;
+        }
+        let headerOffset = setHeaderOffset();
+        const refreshHeaderOffset = () => { headerOffset = setHeaderOffset(); updateActiveByScroll(); };
+        window.addEventListener('resize', refreshHeaderOffset);
+        window.addEventListener('orientationchange', refreshHeaderOffset);
+        if ('ResizeObserver' in window && headerEl) { new ResizeObserver(refreshHeaderOffset).observe(headerEl); }
+
+        // Smooth scroll (subtract header height + optional gap)
+        function getVars() {
+            const cs = getComputedStyle(document.documentElement);
+            const off = parseInt(cs.getPropertyValue('--header-offset')) || headerOffset || 0;
+            const gap = parseInt(cs.getPropertyValue('--anchor-gap')) || 0;
+            return { off, gap };
+        }
+        function smoothScrollToEl(el) {
+            const { off, gap } = getVars();
+            const top = el.getBoundingClientRect().top + window.scrollY - (off + gap);
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        // Link maps + active state
+        const links = [...toc.querySelectorAll('a')];
+        const mobileLinks = [...mobileToc.querySelectorAll('a')];
+        const linkMap = new Map(sections.map(s => [s.id, {
+            desktop: links.find(a => a.getAttribute('href') === `#${s.id}`),
+            mobile: mobileLinks.find(a => a.getAttribute('href') === `#${s.id}`)
+        }]));
+        function setActive(id) {
+            const pair = linkMap.get(id); if (!pair) return;
+            links.forEach(a => a.classList.remove('active'));
+            mobileLinks.forEach(a => a.classList.remove('active'));
+            pair.desktop?.classList.add('active');
+            pair.mobile?.classList.add('active');
+        }
+
+        function enableSmooth(container) {
+            container.addEventListener('click', (e) => {
+                const a = e.target.closest('a[href^="#"]'); if (!a) return;
+                const id = a.getAttribute('href').slice(1);
+                const el = document.getElementById(id); if (!el) return;
+                e.preventDefault();
+                setActive(id);
+                smoothScrollToEl(el);
+                history.replaceState(null, '', `#${id}`);
+            });
+        }
+        enableSmooth(toc); enableSmooth(mobileToc);
+
+        // Hash handling
+        function scrollToHashTarget() {
+            const hash = decodeURIComponent(location.hash || '').replace('#', ''); if (!hash) return;
+            const target = document.getElementById(hash); if (!target) return;
+            setTimeout(() => { smoothScrollToEl(target); setActive(hash); }, 0);
+        }
+        if (location.hash) scrollToHashTarget();
+        window.addEventListener('hashchange', scrollToHashTarget);
+
+        // Deterministic scrollspy
+        const sectionEls = sections.map(s => document.getElementById(s.id)).filter(Boolean);
+        let ticking = false;
+        function updateActiveByScroll() {
+            if (ticking) return; ticking = true;
+            requestAnimationFrame(() => {
+                const { off } = getVars();
+                const refY = window.scrollY + off + 1;
+                let currentId = sectionEls[0]?.id;
+                for (const el of sectionEls) { if (el.offsetTop <= refY) { currentId = el.id; } else { break; } }
+                if (currentId) setActive(currentId);
+                ticking = false;
+            });
+        }
+        updateActiveByScroll();
+        window.addEventListener('scroll', updateActiveByScroll, { passive: true });
+        window.addEventListener('resize', updateActiveByScroll);
+        window.addEventListener('orientationchange', updateActiveByScroll);
+
+        // Keep progress accurate post-load
+        window.addEventListener('load', setProgress);
+
+        /* ==========================================
+           Mobile-only fade-up: apply & observe blocks
+           ========================================== */
+        (function () {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isMobile = window.matchMedia('(max-width: 1099px)').matches;
+            if (prefersReduced || !isMobile) return;
+
+            // Choose which elements are "text blocks"
+            const selectors = [
+                '.hero',          // welcome panel
+                '.info',          // each info panel (roadmap, notes, tournaments, organization)
+                '.cards',         // the cards container
+                '.card'           // individual cards (schools)
+            ].join(',');
+
+            const blocks = Array.from(document.querySelectorAll(selectors));
+
+            // Add base class
+            blocks.forEach(el => el.classList.add('reveal'));
+
+            // IntersectionObserver for fade-up
+            const io = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target); // one-time reveal
+                });
+            }, { threshold: 0.1, root: null, rootMargin: '0px 0px -10% 0px' });
+
+            blocks.forEach(el => io.observe(el));
+        })();
+    </script>
+</body>
+
+</html>
