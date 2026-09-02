@@ -7,7 +7,7 @@
     <title>Karate Parent Portal</title>
     <meta name="description"
         content="A clear, mobile-first portal for karate parents with school-specific pages, belt expectations, schedules, milestones, and resources." />
-    <link rel="icon" href="data:,">
+    <link rel="icon" type="image/png" sizes="128x128" href="assets\favicons\favicon-128.png">
     <style>
         :root {
             --bg: #0f172a;
@@ -51,11 +51,7 @@
                 radial-gradient(1200px 800px at 100% -10%, rgba(34, 211, 238, .06), transparent 40%),
                 radial-gradient(1200px 800px at -10% 110%, rgba(239, 68, 68, .06), transparent 40%),
                 linear-gradient(180deg, rgba(15, 23, 42, .92), rgba(15, 23, 42, .92)),
-                url('data:image/svg+xml;utf8,\
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\
-            <rect width="40" height="40" fill="%230f172a"/>\
-            <path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\
-          </svg>');
+                url('data:image/svg+xml;utf8,\<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">\<rect width="40" height="40" fill="%230f172a"/>\<path d="M0 40H40M40 0V40M0 0H40M0 0V40" stroke="%23ffffff" stroke-opacity="0.04"/>\</svg>');
             background-attachment: fixed;
             background-size: auto, auto, auto, 40px 40px;
             color: var(--text);
@@ -399,6 +395,22 @@
                 transition: none !important;
             }
         }
+
+        .info-image-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .info-image {
+            width: 100%;
+            max-width: 800px;
+            /* prevents it from getting too big */
+            height: auto;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 
@@ -438,7 +450,7 @@
                     <div class="hero-inner">
                         <h2>Welcome</h2>
                         <p>
-                            I’m Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
+                            I'm Shonal “Mr. G” Gangopadhyay. This is an independent resource (not an official National
                             Karate site) to help parents track what to practice, what classes cover, and how to stay
                             ready
                             for testing—organized by school and belt.
@@ -447,8 +459,26 @@
                 </section>
 
                 <section class="info-grid">
+
+                    <!-- <div class="info" id="teamtournament">
+                        <h3>NK Sport Karate Challenge</h3>
+                        <div class="info-image-wrapper">
+                            <img src="assets\img\tournaments\team2026\title.jpg" alt="NK Sport Karate Challenge"
+                                class="info-image">
+                        </div>
+                        <ul class="list">
+                            <li><a href="https://www.mataction.com/SportKarateChallenge" target="_blank"
+                                    rel="noopener noreferrer">Registration</a>: ask your school Director for assistance
+                                if needed</li>
+                            <li><a href="https://shonal-gangopadhyay.github.io/karate_demo/tournaments/NKSportKarateChallenge2026.html"
+                                    rel="noopener noreferrer">More Information</a></li>
+                            <li><strong>Black Belts</strong> (and parent volunteers): Please talk to your instructors
+                                about judging and time/score keeping!</li>
+                        </ul>
+                    </div> -->
+
                     <div class="info" id="roadmap">
-                        <h3>High-level roadmap</h3>
+                        <h3>Curriculum Summary</h3>
                         <ul class="list">
                             <li><strong>New students:</strong> Intro program covering fundamentals—stances, strikes,
                                 kicks,
@@ -483,56 +513,123 @@
                             <li><strong>Recommendation:</strong> Bring <em>all</em> required gear to every class.</li>
                             <li>Clean sparring gear regularly.</li>
                             <li>Treat the bo as a weapon—use care and respect.</li>
-                            <li>No sibling-vs-sibling sparring.</li>
+                            <li>No sibling-vs-sibling sparring unless approved by instructor.</li>
                             <li>During the school year, wear full uniform to form classes. For summer and all sparring
                                 classes:
                                 full uniform <em>or</em> karate pants + belt + tucked NK T-shirt (some schools require
-                                the current year’s shirt).</li>
+                                the current year's shirt).</li>
                             <li>Uniform upgrades (e.g., black-trim jacket with name) vary by school—ask your director.
                                 Blue/red-trim options may also be available.</li>
                         </ul>
                     </div>
 
+                    <div class="info" id="bb-exam">
+                        <h3>Upcoming Black Belt Screening and Exam Dates</h3>
+                        <p>Brown Belts with two black stripes and higher test for Black Belt at a set of screenings and
+                            a graduation ceremony/exam. Each set of schools have different dates and locations for the
+                            screenings, but all schools send their candidates to the same final exam.</p>
+                        <p>Brown Belts with two black stripes go to three screenings (1-3) as well as the final
+                            exam/graduation. First Degree Black Belts and higher go to screenings 2 and 3 as well as the
+                            "all-school" screening. This is different at some schools, so make sure to ask your
+                            director.</p>
+                        <p>If you have questions, ask your school director or instructor.</p>
+
+                        <p>August 2026 Black Belt Exam</p>
+                        <ul class="list">
+                            <li>Apple Valley and Cottage Grove</li>
+                            <ul class="list">
+                                <li>Screening 1: Thursday, April 30th at 7:00 pm @ Cottage Grove NK</li>
+                                <li>Screening 2: Thursday, May 28th at 7:00 pm @ Cottage Grove NK</li>
+                                <li>Screening 3: Thursday, June 25th at 7:00 pm @ Cottage Grove NK</li>
+                            </ul>
+                            <li>Bloomington, Eden Prairie, Hopkins, Maple Grove, and South Minneapolis</li>
+                            <ul class="list">
+                                <li>Screening 1: TBD</li>
+                                <li>Screening 2: TBD</li>
+                                <li>Screening 3: TBD</li>
+                            </ul>
+                            <li>Andover, Ramsey, and Woodbury</li>
+                            <ul class="list">
+                                <li>Screening 1: TBD</li>
+                                <li>Screening 2: TBD</li>
+                                <li>Screening 3: TBD</li>
+                            </ul>
+                            <li>Advanced All-School Screening: Saturday, July 25th at 1:00 pm @ Eden Prairie NK</li>
+                            <li>August Black Belt Exam: Saturday, August 8th at 1:00 pm @ Eisenhower Community Center in
+                                Hopkins</li>
+                        </ul>
+                    </div>
+
                     <div class="info" id="tournaments">
                         <h3>Tournaments</h3>
-                        <p>NK hosts several local tournaments each season. Blue Belts and higher will hear about NK
-                            Intramurals/Team events and Diamond Nationals.</p>
+                        <p>NK hosts two tournaments each year: the NK Intramurals/Team events and Diamond Nationals.
+                            There are also a handful of other tournaments that are in a circuit called NCKA (this is
+                            like the NBA or NFL but for sport karate in MN.) There's also a national circuit called
+                            NASKA. Below, I'll post the dates for upcoming NCKA and NASKA events.
+                        </p>
                         <ul class="list">
                             <li>Multiple rings run at once, grouped by age, belt, and gender.</li>
-                            <li>You’ll receive your ring assignment and report time.</li>
+                            <li>You'll receive your ring assignment and report time.</li>
                             <li>Common divisions (availability varies): Performance Basics/Form (no scores), Competitive
                                 Basics/Form, Competitive Weapons, Sparring, and CMX (creative/musical/extreme; typically
                                 Black Belt, sometimes Brown for musical).</li>
                             <li><strong>Suggested for many students:</strong> Competitive Form, Competitive Weapons, and
                                 Sparring (when eligible).</li>
                         </ul>
-                        <p><strong>2025 dates</strong></p>
+                        <p><strong>2026 dates</strong></p>
                         <ul class="list">
-                            <li>Diamond Nationals — October 10–11 (Fri–Sat)</li>
+                            <li>MN State Karate Championships — Sunday, March 15th</li>
                             <ul class="list">
-                                <li><a href="https://diamondnationals.com/register" target="_blank"
-                                        rel="noopener noreferrer">Registration</a> - ask your school Director for
-                                    assistance if needed</li>
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li><a href="https://www.mataction.com/MN-STATE" target="_blank"
+                                        rel="noopener noreferrer">Registration</a> - ask your school
+                                    Director for assistance if needed</li>
                             </ul>
-                            <li>NCKA Finals — November 16 (Sun)</li>
+                            <br>
+                            <li>Central States Karate Championships — Sunday, May 3rd</li>
                             <ul class="list">
-                                <li><a href="https://www.mataction.com/en/ncka-finals" target="_blank"
-                                        rel="noopener noreferrer">Registration</a> - ask your school Director for
-                                    assistance if needed</li>
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li><a href="https://www.mataction.com/Central-States" target="_blank"
+                                        rel="noopener noreferrer">Registration</a> - ask your school
+                                    Director for assistance if needed</li>
                             </ul>
+                            <br>
+                            <li>Infinity National Championships — Friday, May 8th - Saturday, May 9th</li>
+                            <ul class="list">
+                                <li>This is a WSKL tournament (Wisconsin local competition).</li>
+                                <li><a href="https://uventex.com/events/event/335971" target="_blank"
+                                        rel="noopener noreferrer">Registration</a> - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+                            <br>
+                            <li>Twin Cities Rumble — Saturday, August 29th</li>
+                            <ul class="list">
+                                <li>This is an NCKA tournament (local competition).</li>
+                                <li>Registration (not open yet) - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+                            <br>
+                            <li>Diamond Nationals — Friday, October 9th - Saturday, October 10th</li>
+                            <ul class="list">
+                                <li>This is an NCKA (local) and NASKA (international) tournament.</li>
+                                <li>Registration (not open yet) - ask your school
+                                    Director for assistance if needed</li>
+                            </ul>
+
+                            <br>
                         </ul>
                     </div>
 
                     <div class="info" id="organization">
-                        <h3>How this site is organized</h3>
+                        <h3>Locations</h3>
                         <p>Choose your school, then jump to a belt. Each belt page follows the same structure:
                             <em>Class focus</em>, <em>New concepts</em>, <em>Expectations</em>, <em>Resources
                                 (videos)</em>, and
-                            <em>Testing requirements</em>. Maple Grove and Apple Valley are the first schools being
-                            built out.
+                            <em>Testing requirements</em>.
                         </p>
 
                         <div class="cards">
+                            <!--
                             <article class="card">
                                 <h3>Albertville</h3>
                                 <div class="meta">Mrs. Boone</div>
@@ -541,7 +638,9 @@
                                         onclick="demoSchool('Albertville'); return false;">Visit school page</a>
                                 </div>
                             </article>
+                            -->
 
+                            <!--
                             <article class="card">
                                 <h3>Andover</h3>
                                 <div class="meta">Ms. Lomasney and Mr. Sherve</div>
@@ -550,10 +649,11 @@
                                         school page</a>
                                 </div>
                             </article>
+                            -->
 
                             <article class="card">
                                 <h3>Apple Valley</h3>
-                                <div class="meta">Mr. and Mrs. Albertson</div>
+                                <div class="meta">Mr. and Mrs. G</div>
                                 <div class="actions">
                                     <a class="btn accent"
                                         href="schools/applevalley/">Visit
@@ -561,15 +661,16 @@
                                 </div>
                             </article>
 
-                            <article class="card">
+                            <!-- <article class="card">
                                 <h3>Eden Prairie</h3>
                                 <div class="meta">Mr. Hill</div>
                                 <div class="actions">
                                     <a class="btn accent" href="#"
                                         onclick="demoSchool('Eden Prairie'); return false;">Visit school page</a>
                                 </div>
-                            </article>
+                            </article> -->
 
+                            <!--
                             <article class="card">
                                 <h3>Hopkins</h3>
                                 <div class="meta">Mr. Throne</div>
@@ -578,6 +679,7 @@
                                         school page</a>
                                 </div>
                             </article>
+                            -->
 
                             <article class="card">
                                 <h3>Maple Grove</h3>
@@ -599,20 +701,24 @@
                                 </div>
                             </article>
 
+
                             <article class="card">
                                 <h3>South Minneapolis</h3>
                                 <div class="meta">Ms. Lemon</div>
                                 <div class="actions">
-                                    <a class="btn accent" href="#"
-                                        onclick="demoSchool('South Minneapolis'); return false;">Visit school page</a>
+                                    <a class="btn accent"
+                                        href="https://shonal-gangopadhyay.github.io/karate_demo/schools/southminneapolis/index.html">Visit
+                                        school page</a>
                                 </div>
                             </article>
+
+
                         </div>
                     </div>
                 </section>
 
                 <footer>
-                    <p>© <span id="year"></span> Karate Parent Portal • Built for clarity and momentum</p>
+                    <p><span id="year"></span> Karate Parent Portal • Built for clarity and momentum</p>
                 </footer>
             </div>
         </div>
@@ -642,10 +748,12 @@
         // Build TOC
         const sections = [
             { id: 'welcome', label: 'Welcome' },
-            { id: 'roadmap', label: 'High-level roadmap' },
+            { id: 'teamtournament', label: 'NK Sport Karate Challenge' },
+            { id: 'roadmap', label: 'Curriculum Summary' },
             { id: 'notes', label: 'Quick notes' },
+            { id: 'bb-exam', label: 'Upcoming Black Belt Exam' },
             { id: 'tournaments', label: 'Tournaments' },
-            { id: 'organization', label: 'How this site is organized' },
+            { id: 'organization', label: 'Locations' },
         ];
         const toc = document.getElementById('toc');
         const mobileToc = document.getElementById('mobileToc');
